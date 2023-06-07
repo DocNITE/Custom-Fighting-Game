@@ -1,2 +1,3 @@
+﻿defaultWindowTitle: Drunk World - Station Edition
 modules: [] # Any needed RobustToolbox modules here.
 assemblyPrefix: Content # Assembly prefix here.
