@@ -1,0 +1,11 @@
+<screens1:MainScreen
+    xmlns="https://spacestation14.io"
+    xmlns:screens="clr-namespace:Robust.Client.UserInterface.Screens"
+    xmlns:client="clr-namespace:Content.Client"
+    xmlns:screens1="clr-namespace:Content.Client.UserInterfaces.Screens"
+    VerticalAlignment="Center"
+    HorizontalAlignment="Center">
+    <BoxContainer Name="ConnectionBox" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <RichTextLabel Access="Public" Name="Content"></RichTextLabel>
+    </BoxContainer>
+</screens1:MainScreen>

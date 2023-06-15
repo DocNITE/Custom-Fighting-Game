@@ -1,0 +1,15 @@
+- type: font
+  id: SpaceMonoBold
+  path: /Fonts/SpaceMono/SpaceMono-Bold.ttf
+  
+- type: font
+  id: SpaceMonoBoldItalic
+  path: /Fonts/SpaceMono/SpaceMono-BoldItalic.ttf
+  
+- type: font
+  id: SpaceMonoItalic
+  path: /Fonts/SpaceMono/SpaceMono-Italic.ttf
+  
+- type: font
+  id: SpaceMonoRegular
+  path: /Fonts/SpaceMono/SpaceMono-Regular.ttf

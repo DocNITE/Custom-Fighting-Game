@@ -1,3 +1,4 @@
+using Content.Client.States;
 using JetBrains.Annotations;
 using Robust.Client;
 using Robust.Client.Graphics;
@@ -13,6 +14,8 @@ namespace Content.Client;
 [UsedImplicitly]
 public sealed class EntryPoint : GameClient
 {
+    [Dependency] private readonly IOverlayManager _overlayManager = default!;
+
     public override void Init()
     {
         var factory = IoCManager.Resolve<IComponentFactory>();
@@ -50,19 +53,19 @@ public sealed class EntryPoint : GameClient
 
         // DEVNOTE: It's recommended to look at how this works! It's for debug purposes and you probably want something prettier for the final game.
         // Additionally, state manager is the primary way you'll be changing between UIScreen instances.
-        stateManager.RequestStateChange<DebugBuiltinConnectionScreenState>();
+         stateManager.RequestStateChange<MainScreenState>();
 
         // DEVNOTE: Further setup...
-        //var client = IoCManager.Resolve<IBaseClient>();
+        var client = IoCManager.Resolve<IBaseClient>();
 
         // Optionally, singleplayer also works!
-        // client.StartSinglePlayer();
+        client.StartSinglePlayer();
     }
 
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
-            
+
         // DEVNOTE: You might want to do a proper shutdown here.
     }
 
@@ -70,5 +73,6 @@ public sealed class EntryPoint : GameClient
     {
         base.Update(level, frameEventArgs);
         // DEVNOTE: Game update loop goes here. Usually you'll want some independent GameTicker.
+        Logger.Info("Work");
     }
 }
