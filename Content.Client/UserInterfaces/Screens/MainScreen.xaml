@@ -6,6 +6,11 @@
     VerticalAlignment="Center"
     HorizontalAlignment="Center">
     <BoxContainer Name="ConnectionBox" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextureRect Name="BackgroundTexture" 
+                     MinSize="640 480" 
+                     VerticalExpand="True" 
+                     HorizontalExpand="True" 
+                     TextureScale="1 1"></TextureRect>
         <RichTextLabel Access="Public" Name="Content"></RichTextLabel>
     </BoxContainer>
 </screens1:MainScreen>

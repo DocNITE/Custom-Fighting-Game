@@ -73,6 +73,5 @@ public sealed class EntryPoint : GameClient
     {
         base.Update(level, frameEventArgs);
         // DEVNOTE: Game update loop goes here. Usually you'll want some independent GameTicker.
-        Logger.Info("Work");
     }
 }
