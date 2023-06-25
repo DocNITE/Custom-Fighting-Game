@@ -2,15 +2,14 @@
     xmlns="https://spacestation14.io"
     xmlns:screens="clr-namespace:Robust.Client.UserInterface.Screens"
     xmlns:client="clr-namespace:Content.Client"
-    xmlns:screens1="clr-namespace:Content.Client.UserInterfaces.Screens"
-    VerticalAlignment="Center"
-    HorizontalAlignment="Center">
+    xmlns:screens1="clr-namespace:Content.Client.UserInterfaces.Screens">
     <BoxContainer Name="ConnectionBox" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <TextureRect Name="BackgroundTexture" 
-                     MinSize="640 480" 
-                     VerticalExpand="True" 
-                     HorizontalExpand="True" 
-                     TextureScale="1 1"></TextureRect>
-        <RichTextLabel Access="Public" Name="Content"></RichTextLabel>
+        <BoxContainer Orientation="Vertical" VerticalExpand="True" HorizontalExpand="True" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label Text="Don't Forget"></Label>
+            <Control MinHeight="5"></Control>
+            <Button Text="Start"></Button>
+            <Control MinHeight="5"></Control>
+            <Button Text="End"></Button>
+        </BoxContainer>
     </BoxContainer>
 </screens1:MainScreen>

@@ -1,8 +1,10 @@
 using Content.Client.States;
+using Content.Client.UserInterfaces.Screens;
 using JetBrains.Annotations;
 using Robust.Client;
 using Robust.Client.Graphics;
 using Robust.Client.State;
+using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.States;
 using Robust.Shared.ContentPack;
 using Robust.Shared.Prototypes;
@@ -15,6 +17,7 @@ namespace Content.Client;
 public sealed class EntryPoint : GameClient
 {
     [Dependency] private readonly IOverlayManager _overlayManager = default!;
+    [Dependency] private readonly IUserInterfaceManager _userInterfaceManager = default!;
 
     public override void Init()
     {
@@ -36,6 +39,7 @@ public sealed class EntryPoint : GameClient
         ClientContentIoC.Register();
 
         IoCManager.BuildGraph();
+        IoCManager.InjectDependencies(this);
 
         factory.GenerateNetIds();
 
@@ -53,13 +57,16 @@ public sealed class EntryPoint : GameClient
 
         // DEVNOTE: It's recommended to look at how this works! It's for debug purposes and you probably want something prettier for the final game.
         // Additionally, state manager is the primary way you'll be changing between UIScreen instances.
-         stateManager.RequestStateChange<MainScreenState>();
+        _userInterfaceManager.MainViewport.Visible = false;
+         stateManager.RequestStateChange<GameplayState>();
 
         // DEVNOTE: Further setup...
         var client = IoCManager.Resolve<IBaseClient>();
 
         // Optionally, singleplayer also works!
         client.StartSinglePlayer();
+        
+        //_overlayManager.AddOverlay(new MainOverlay());
     }
 
     protected override void Dispose(bool disposing)

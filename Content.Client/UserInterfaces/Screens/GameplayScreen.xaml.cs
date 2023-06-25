@@ -13,8 +13,8 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Client.UserInterfaces.Screens;
 
-[GenerateTypedNameReferences]
-public partial class MainScreen : UIScreen
+[GenerateTypedNameReferences, Virtual]
+public partial class GameplayScreen : UIScreen
 {
     [Dependency] private readonly IBaseClient _client = default!;
     [Dependency] private readonly IConfigurationManager _cfg = default!;
@@ -23,25 +23,27 @@ public partial class MainScreen : UIScreen
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IResourceCache _resourceCache = default!;
 
-    public MainScreen()
+    public GameplayScreen()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
         SetAnchorPreset(this, LayoutPreset.Wide);
-        
-        // This could be done better. I don't want to deal with stylesheets at the moment.
-        //var texture = _resourceCache.GetTexture("/Textures/Interface/Nano/square_black.png");
-        //var shader = _prototypeManager.Index<ShaderPrototype>("CameraStatic").Instance().Duplicate();
-        
-        //BackgroundTexture.Stretch = TextureRect.StretchMode.Scale;
-        //BackgroundTexture.Texture = texture;
-        //BackgroundTexture.ShaderOverride = shader;
+
+        var message = "";
+        for (int i = 0; i < 200; i++)
+        {
+            message += "Adhcjas ";
+        }
+        ContentLabel.SetMessage(message);
     }
 
     protected override void Draw(DrawingHandleScreen handle)
     {
         base.Draw(handle);
 
+        MainContainer.SetSize = this.Size;
+        LayoutContainer.SetPosition(MainContainer, this.Size/2 - MainContainer.Size/2);
+        
         //handle.UseShader(_prototypeManager.Index<ShaderPrototype>("CameraStatic").Instance());
         //handle.DrawTextureRect(_resourceCache.GetTexture("/Textures/Interface/Nano/square_black.png"), new UIBox2(new(0,0), this.Size), Color.White);
         //handle.DrawRect(new UIBox2(new(0,0), this.Size), Color.Black);
