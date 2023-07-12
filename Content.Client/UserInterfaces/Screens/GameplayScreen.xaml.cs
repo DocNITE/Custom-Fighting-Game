@@ -27,7 +27,11 @@ public partial class GameplayScreen : UIScreen
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
-        SetAnchorPreset(this, LayoutPreset.Wide);
+
+        AutoscaleMaxResolution = new Vector2i(1080, 770);
+
+        SetAnchorPreset(MainViewport, LayoutPreset.Wide);
+        SetAnchorPreset(ViewportContainer, LayoutPreset.Wide);
 
         var message = "";
         for (int i = 0; i < 200; i++)

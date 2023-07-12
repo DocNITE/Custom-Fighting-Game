@@ -3,9 +3,11 @@
     xmlns:screens="clr-namespace:Robust.Client.UserInterface.Screens"
     xmlns:client="clr-namespace:Content.Client"
     xmlns:screens1="clr-namespace:Content.Client.UserInterfaces.Screens">
+    <LayoutContainer Name="ViewportContainer" HorizontalExpand="True" VerticalExpand="True">
+        <screens1:MainViewport Name="MainViewport"/>
+    </LayoutContainer>
     <BoxContainer Access="Public" Name="MainContainer" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
         <BoxContainer Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <screens1:Viewport></screens1:Viewport>
             <RichTextLabel Access="Public" Name="ContentLabel"></RichTextLabel>
         </BoxContainer>
     </BoxContainer>
