@@ -102,15 +102,15 @@ public sealed class ScalingViewport : Control, IViewportControl
         var texture = new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/default.png")).DirFrame0().Default;
         var textureSize = new Vector2(32, 32);
         var textureLocalSize = new Vector2(
-            drawBox.Height/( _physicalSize.Y / (textureSize.X*_curRenderScale) ), 
+            drawBox.Width/( _physicalSize.X / (textureSize.X*_curRenderScale) ), 
             drawBox.Height/( _physicalSize.Y / (textureSize.Y*_curRenderScale) ));
-        
-        for (int i = 0; i < 1024; i++)
-        {
-            handle.DrawTextureRectRegion(texture,
-                new UIBox2(new Vector2(0,0), textureLocalSize),
-                new UIBox2(new Vector2(0,0), textureSize));
-        }
+        var texturePosition = new Vector2(-0, 0);
+        var textureLocalPosition = drawBox.TopLeft + 
+                                   (texturePosition * (drawBox.Size / _physicalSize));
+
+        handle.DrawTextureRectRegion(texture,
+            new UIBox2(textureLocalPosition, textureLocalPosition + textureLocalSize),
+            new UIBox2(new Vector2(0,0), textureSize));
     }
 
     private UIBox2i GetDrawBox()
