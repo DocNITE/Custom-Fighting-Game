@@ -100,17 +100,31 @@ public sealed class ScalingViewport : Control, IViewportControl
         handle.DrawRect(drawBox, Color.Black, true);
 
         var texture = new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/default.png")).DirFrame0().Default;
+        var textureScale = 1;
         var textureSize = new Vector2(32, 32);
+        var textureRect = new UIBox2((0, 0), (32, 32));
+        var texturePosition = new Vector2(50, 50);
         var textureLocalSize = new Vector2(
-            drawBox.Width/( _physicalSize.X / (textureSize.X*_curRenderScale) ), 
-            drawBox.Height/( _physicalSize.Y / (textureSize.Y*_curRenderScale) ));
-        var texturePosition = new Vector2(-0, 0);
-        var textureLocalPosition = drawBox.TopLeft + 
-                                   (texturePosition * (drawBox.Size / _physicalSize));
+            drawBox.Width/( _physicalSize.X / ((textureSize.X*_curRenderScale)*textureScale) ), 
+            drawBox.Height/( _physicalSize.Y / ((textureSize.Y*_curRenderScale)*textureScale) ));
+        var textureLocalPosition = new Vector2((float)drawBox.TopLeft.X, (float)drawBox.TopLeft.Y) + 
+                                   texturePosition * new Vector2(
+                                       (float)drawBox.Size.X / (float)_physicalSize.X, 
+                                       (float)drawBox.Size.X / (float)_physicalSize.X);
 
+        // draw texture
         handle.DrawTextureRectRegion(texture,
-            new UIBox2(textureLocalPosition, textureLocalPosition + textureLocalSize),
-            new UIBox2(new Vector2(0,0), textureSize));
+            new UIBox2(
+                textureLocalPosition, 
+                textureLocalPosition + textureLocalSize),
+             textureRect
+            );
+        
+        // draw non used area
+        handle.DrawRect(new UIBox2((0,0), (Size.X, drawBox.Top)), Color.Black, true);
+        handle.DrawRect(new UIBox2((drawBox.Right,0), (Size.X, Size.Y)), Color.Black, true);
+        handle.DrawRect(new UIBox2((0,drawBox.Bottom), (Size.X, Size.Y)), Color.Black, true);
+        handle.DrawRect(new UIBox2((0,0), (drawBox.Left, Size.Y)), Color.Black, true);
     }
 
     private UIBox2i GetDrawBox()
