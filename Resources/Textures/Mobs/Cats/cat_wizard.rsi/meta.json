@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "size":
+  {
+    "x": 32,
+    "y": 32
+  },
+  "license": "CC-BY-SA-3.0",
+  "copyright": ":middle_finger:",
+  "states":
+  [
+    {
+      "name": "dummy",
+      "directions": 4
+    },
+    {
+      "name": "right_hand",
+      "directions": 4
+    },
+    {
+      "name": "left_hand",
+      "directions": 4
+    }
+  ]
+}
