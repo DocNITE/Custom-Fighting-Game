@@ -34,16 +34,17 @@ public sealed class ViewportUIController : UIController
             return;
         }
 
-        var min = 640;//_configurationManager.GetCVar(CCVars.ViewportMinimumWidth);
-        var max = 1280;//_configurationManager.GetCVar(CCVars.ViewportMaximumWidth);
-        var width = 800;//_configurationManager.GetCVar(CCVars.ViewportWidth);
+        var min = 15;
+        var max = 21;
+        var width = 21;
 
         if (width < min || width > max)
         {
-            width = 800; //CCVars.ViewportWidth.DefaultValue;
+            width = 21; 
         }
 
         Viewport.Viewport.ViewportSize = (EyeManager.PixelsPerMeter * width, EyeManager.PixelsPerMeter * ViewportHeight);
+        Viewport.Viewport.PhysicalSize = (800, 600);
     }
 
     public void ReloadViewport()

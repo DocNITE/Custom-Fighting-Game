@@ -1,14 +1,8 @@
 <screens1:GameplayScreen
     xmlns="https://spacestation14.io"
-    xmlns:screens="clr-namespace:Robust.Client.UserInterface.Screens"
-    xmlns:client="clr-namespace:Content.Client"
-    xmlns:screens1="clr-namespace:Content.Client.UserInterfaces.Screens">
+    xmlns:screens1="clr-namespace:Content.Client.UserInterfaces.Screens"
+    xmlns:viewport="clr-namespace:Content.Client.Viewport">
     <LayoutContainer Name="ViewportContainer" HorizontalExpand="True" VerticalExpand="True">
-        <screens1:MainViewport Name="MainViewport"/>
+        <viewport:MainViewport Name="MainViewport"/>
     </LayoutContainer>
-    <BoxContainer Access="Public" Name="MainContainer" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <BoxContainer Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <RichTextLabel Access="Public" Name="ContentLabel"></RichTextLabel>
-        </BoxContainer>
-    </BoxContainer>
 </screens1:GameplayScreen>

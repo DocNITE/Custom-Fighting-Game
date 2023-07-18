@@ -15,10 +15,13 @@ public sealed class ScalingViewport : Control, IViewportControl
     [Dependency] private readonly IInputManager _inputManager = default!;
 
     private Vector2i _viewportSize;
+    private Vector2i _physicalSize;
     private int _curRenderScale;
     private ScalingViewportStretchMode _stretchMode = ScalingViewportStretchMode.Bilinear;
     private ScalingViewportRenderScaleMode _renderScaleMode = ScalingViewportRenderScaleMode.Fixed;
     private int _fixedRenderScale = 1;
+
+    private bool _initialized = false;
 
     private readonly List<CopyPixelsDelegate<Rgba32>> _queuedScreenshots = new();
 
@@ -30,6 +33,16 @@ public sealed class ScalingViewport : Control, IViewportControl
         set
         {
             _viewportSize = value;
+            InvalidateViewport();
+        }
+    }
+    
+    public Vector2i PhysicalSize
+    {
+        get => _physicalSize;
+        set
+        {
+            _physicalSize = value;
             InvalidateViewport();
         }
     }
@@ -79,34 +92,27 @@ public sealed class ScalingViewport : Control, IViewportControl
 
     protected override void Draw(DrawingHandleScreen handle)
     {
-        //base.Draw(handle);
-        
-        //handle.DrawRect(new UIBox2(Vector2.Zero, this.Size), Color.Green, true);
-        //handle.SetTransform(new(32, 32), 40);
-        //handle.DrawTexture(new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/chel.png")).DirFrame0().Default, new(400, 400));
-        
         EnsureViewportCreated();
 
         var drawBox = GetDrawBox();
-        var drawBoxGlobal = drawBox.Translated(GlobalPixelPosition);
-        // some govno ex 2
-        var tex = Texture.White;
-        handle.DrawTextureRect(tex, drawBox);
-        // Some govno ex
-        //handle.DrawTextureRect(new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/chel.png")).DirFrame0().Default, drawBox);
-        // Drawbox example
-        //handle.DrawTexture(new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/chel.png")).DirFrame0().Default, new(400, 400));
-        // SS14 rendering
-        //_viewport.RenderScreenOverlaysBelow(handle, this, drawBoxGlobal);
-        //handle.DrawTextureRect(_viewport.RenderTarget.Texture, drawBox);
-        //_viewport.RenderScreenOverlaysAbove(handle, this, drawBoxGlobal);
+        
+        // Clear screen
+        handle.DrawRect(drawBox, Color.Black, true);
+
+        var texture = new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/default.png")).DirFrame0().Default;
+        var textureSize = new Vector2(32, 32);
+        var textureLocalSize = new Vector2(
+            drawBox.Height/( _physicalSize.Y / (textureSize.X*_curRenderScale) ), 
+            drawBox.Height/( _physicalSize.Y / (textureSize.Y*_curRenderScale) ));
+        
+        for (int i = 0; i < 1024; i++)
+        {
+            handle.DrawTextureRectRegion(texture,
+                new UIBox2(new Vector2(0,0), textureLocalSize),
+                new UIBox2(new Vector2(0,0), textureSize));
+        }
     }
 
-    public void Screenshot(CopyPixelsDelegate<Rgba32> callback)
-    {
-        _queuedScreenshots.Add(callback);
-    }
-    
     private UIBox2i GetDrawBox()
     {
 
@@ -131,34 +137,7 @@ public sealed class ScalingViewport : Control, IViewportControl
             return (UIBox2i) UIBox2.FromDimensions(pos, FixedStretchSize.Value);
         }
     }
-    
-    private void RegenerateViewport()
-    {
 
-        var vpSizeBase = ViewportSize;
-        var ourSize = PixelSize;
-        var (ratioX, ratioY) = ourSize / (Vector2) vpSizeBase;
-        var ratio = Math.Min(ratioX, ratioY);
-        var renderScale = 1;
-        switch (_renderScaleMode)
-        {
-            case ScalingViewportRenderScaleMode.CeilInt:
-                renderScale = (int) Math.Ceiling(ratio);
-                break;
-            case ScalingViewportRenderScaleMode.FloorInt:
-                renderScale = (int) Math.Floor(ratio);
-                break;
-            case ScalingViewportRenderScaleMode.Fixed:
-                renderScale = _fixedRenderScale;
-                break;
-        }
-
-        // Always has to be at least one to avoid passing 0,0 to the viewport constructor
-        renderScale = Math.Max(1, renderScale);
-
-        _curRenderScale = renderScale;
-    }
-    
     protected override void Resized()
     {
         base.Resized();
@@ -173,27 +152,29 @@ public sealed class ScalingViewport : Control, IViewportControl
     
     private void EnsureViewportCreated()
     {
-        
+        if (_initialized) return;
+        _curRenderScale = 2;
+        _initialized = !_initialized;
     }
 
     public MapCoordinates ScreenToMap(Vector2 coords)
     {
-        throw new NotImplementedException();
+        return new MapCoordinates();
     }
 
     public Vector2 WorldToScreen(Vector2 map)
     {
-        throw new NotImplementedException();
+        return new Vector2();
     }
 
     public Matrix3 GetWorldToScreenMatrix()
     {
-        throw new NotImplementedException();
+        return new Matrix3();
     }
 
     public Matrix3 GetLocalToScreenMatrix()
     {
-        throw new NotImplementedException();
+        return new Matrix3();
     }
 }
 

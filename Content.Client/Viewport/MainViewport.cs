@@ -8,7 +8,7 @@ using Robust.Client.Utility;
 using Robust.Shared.Configuration;
 using Robust.Shared.Utility;
 
-namespace Content.Client.UserInterfaces.Screens;
+namespace Content.Client.Viewport;
 
 [Virtual]
 public partial class MainViewport : UIWidget
