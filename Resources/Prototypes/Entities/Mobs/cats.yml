@@ -1,0 +1,7 @@
+﻿- type: entity
+  id: CatBase
+  name: cat base
+  description: lol
+  components:
+    - type: EntSprite
+      texture: /Textures/noSprite.png # Provided by the game engine.
