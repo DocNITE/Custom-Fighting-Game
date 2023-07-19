@@ -1,3 +1,4 @@
+using System.Numerics;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
 using Robust.Client.UserInterface;
@@ -105,7 +106,7 @@ public sealed class ScalingViewport : Control, IViewportControl
         var texture = new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/default.png")).DirFrame0().Default;
         var textureScale = 1;
         var textureSize = new Vector2(32, 32);
-        var textureRect = new UIBox2((0, 0), (32, 32));
+        var textureRect = new UIBox2(new Vector2(0, 0), new Vector2(32, 32));
         var texturePosition = new Vector2(50, 50);
         var textureLocalSize = new Vector2(
             drawBox.Width/( _physicalSize.X / ((textureSize.X*_curRenderScale)*textureScale) ), 
@@ -124,10 +125,10 @@ public sealed class ScalingViewport : Control, IViewportControl
             );
         
         // draw non used area
-        handle.DrawRect(new UIBox2((0,0), (Size.X, drawBox.Top)), Color.Black, true);
-        handle.DrawRect(new UIBox2((drawBox.Right,0), (Size.X, Size.Y)), Color.Black, true);
-        handle.DrawRect(new UIBox2((0,drawBox.Bottom), (Size.X, Size.Y)), Color.Black, true);
-        handle.DrawRect(new UIBox2((0,0), (drawBox.Left, Size.Y)), Color.Black, true);
+        handle.DrawRect(new UIBox2(new Vector2(0,0), new Vector2(Size.X, drawBox.Top)), Color.Black, true);
+        handle.DrawRect(new UIBox2(new Vector2(drawBox.Right,0), new Vector2(Size.X, Size.Y)), Color.Black, true);
+        handle.DrawRect(new UIBox2(new Vector2(0,drawBox.Bottom), new Vector2(Size.X, Size.Y)), Color.Black, true);
+        handle.DrawRect(new UIBox2(new Vector2(0,0), new Vector2(drawBox.Left, Size.Y)), Color.Black, true);
     }
 
     private UIBox2i GetDrawBox()
