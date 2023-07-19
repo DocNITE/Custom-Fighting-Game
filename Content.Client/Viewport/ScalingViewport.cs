@@ -98,6 +98,9 @@ public sealed class ScalingViewport : Control, IViewportControl
         
         // Clear screen
         handle.DrawRect(drawBox, Color.Black, true);
+        
+        //TODO: Make tile drawing (so we need other objects)
+        //TODO2: Make entities drawing with SpriteComponent from content code
 
         var texture = new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/default.png")).DirFrame0().Default;
         var textureScale = 1;
