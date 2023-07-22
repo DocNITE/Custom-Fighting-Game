@@ -1,15 +1,10 @@
 using Content.Client.States;
-using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
-using Robust.Client.Player;
 using Robust.Client.UserInterface.Controllers;
-using Robust.Shared.Configuration;
-using Robust.Shared.Timing;
-using Content.Client.UserInterfaces.Screens;
 
-namespace Content.Client.Viewport;
+namespace Content.Client.Graphics.Viewport;
 
-public sealed class ViewportUIController : UIController
+public sealed class ViewportUiController : UIController
 {
 
     public static readonly Vector2i ViewportSize = (EyeManager.PixelsPerMeter * 21, EyeManager.PixelsPerMeter * 15);

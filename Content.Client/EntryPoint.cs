@@ -42,8 +42,6 @@ public sealed class EntryPoint : GameClient
         IoCManager.InjectDependencies(this);
 
         factory.GenerateNetIds();
-
-        // DEVNOTE: This is generally where you'll be setting up the IoCManager further.
     }
 
     public override void PostInit()
@@ -54,25 +52,17 @@ public sealed class EntryPoint : GameClient
         IoCManager.Resolve<ILightManager>().Enabled = false;
 
         var stateManager = IoCManager.Resolve<IStateManager>();
-
-        // DEVNOTE: It's recommended to look at how this works! It's for debug purposes and you probably want something prettier for the final game.
-        // Additionally, state manager is the primary way you'll be changing between UIScreen instances.
+        
         _userInterfaceManager.MainViewport.Visible = false;
          stateManager.RequestStateChange<GameplayState>();
-
-        // DEVNOTE: Further setup...
+         
         var client = IoCManager.Resolve<IBaseClient>();
-
-        // Optionally, singleplayer also works!
         client.StartSinglePlayer();
-        
-        //_overlayManager.AddOverlay(new MainOverlay());
     }
 
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
-
         // DEVNOTE: You might want to do a proper shutdown here.
     }
 

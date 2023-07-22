@@ -3,5 +3,5 @@
   name: cat base
   description: lol
   components:
-    - type: EntSprite
+    - type: SpriteEntity
       texture: /Textures/noSprite.png # Provided by the game engine.

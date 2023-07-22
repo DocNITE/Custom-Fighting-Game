@@ -1,7 +1,7 @@
 <screens1:GameplayScreen
     xmlns="https://spacestation14.io"
     xmlns:screens1="clr-namespace:Content.Client.UserInterfaces.Screens"
-    xmlns:viewport="clr-namespace:Content.Client.Viewport">
+    xmlns:viewport="clr-namespace:Content.Client.Graphics.Viewport">
     <LayoutContainer Name="ViewportContainer" HorizontalExpand="True" VerticalExpand="True">
         <viewport:MainViewport Name="MainViewport"/>
     </LayoutContainer>

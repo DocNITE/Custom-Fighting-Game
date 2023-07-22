@@ -8,7 +8,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Utility;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace Content.Client.Viewport;
+namespace Content.Client.Graphics.Viewport;
 
 public sealed class ScalingViewport : Control, IViewportControl
 {
@@ -103,27 +103,9 @@ public sealed class ScalingViewport : Control, IViewportControl
         //TODO: Make tile drawing (so we need other objects)
         //TODO2: Make entities drawing with SpriteComponent from content code
 
-        var texture = new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/default.png")).DirFrame0().Default;
-        var textureScale = 1;
-        var textureSize = new Vector2(32, 32);
-        var textureRect = new UIBox2(new Vector2(0, 0), new Vector2(32, 32));
-        var texturePosition = new Vector2(50, 50);
-        var textureLocalSize = new Vector2(
-            drawBox.Width/( _physicalSize.X / ((textureSize.X*_curRenderScale)*textureScale) ), 
-            drawBox.Height/( _physicalSize.Y / ((textureSize.Y*_curRenderScale)*textureScale) ));
-        var textureLocalPosition = new Vector2((float)drawBox.TopLeft.X, (float)drawBox.TopLeft.Y) + 
-                                   texturePosition * new Vector2(
-                                       (float)drawBox.Size.X / (float)_physicalSize.X, 
-                                       (float)drawBox.Size.X / (float)_physicalSize.X);
+        var texture = new GraphicsTexture("/Textures/Mobs/Cats/cat_wizard.rsi", "dummy");
+        DrawTexture(handle, texture, drawBox);
 
-        // draw texture
-        handle.DrawTextureRectRegion(texture,
-            new UIBox2(
-                textureLocalPosition, 
-                textureLocalPosition + textureLocalSize),
-             textureRect
-            );
-        
         // draw non used area
         handle.DrawRect(new UIBox2(new Vector2(0,0), new Vector2(Size.X, drawBox.Top)), Color.Black, true);
         handle.DrawRect(new UIBox2(new Vector2(drawBox.Right,0), new Vector2(Size.X, Size.Y)), Color.Black, true);
@@ -154,6 +136,30 @@ public sealed class ScalingViewport : Control, IViewportControl
             var pos = (ourSize - FixedStretchSize.Value) / 2;
             return (UIBox2i) UIBox2.FromDimensions(pos, FixedStretchSize.Value);
         }
+    }
+
+    public void DrawTexture(DrawingHandleScreen handle, GraphicsTexture texture, UIBox2i drawBox)
+    {
+        //var texture = new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/default.png")).DirFrame0().Default;
+        var textureScale = texture.Scale;
+        var textureSize = texture.Size;
+        var textureRect = texture.Rect;
+        var texturePosition = texture.Position;
+        var textureLocalSize = new Vector2(
+            drawBox.Width/( _physicalSize.X / ((textureSize.X*_curRenderScale)*textureScale.X) ), 
+            drawBox.Height/( _physicalSize.Y / ((textureSize.Y*_curRenderScale)*textureScale.Y) ));
+        var textureLocalPosition = new Vector2((float)drawBox.TopLeft.X, (float)drawBox.TopLeft.Y) + 
+                                   texturePosition * new Vector2(
+                                       (float)drawBox.Size.X / (float)_physicalSize.X, 
+                                       (float)drawBox.Size.X / (float)_physicalSize.X);
+
+        // draw texture
+        handle.DrawTextureRectRegion(texture.Texture,
+            new UIBox2(
+                textureLocalPosition, 
+                textureLocalPosition + textureLocalSize),
+            textureRect
+        );
     }
 
     protected override void Resized()
