@@ -1,11 +1,10 @@
 using Content.Client.States;
-using Content.Client.UserInterfaces.Screens;
+using Content.Client.UserInterfaces;
 using JetBrains.Annotations;
 using Robust.Client;
 using Robust.Client.Graphics;
 using Robust.Client.State;
 using Robust.Client.UserInterface;
-using Robust.Client.UserInterface.States;
 using Robust.Shared.ContentPack;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
@@ -16,11 +15,13 @@ namespace Content.Client;
 [UsedImplicitly]
 public sealed class EntryPoint : GameClient
 {
-    [Dependency] private readonly IOverlayManager _overlayManager = default!;
     [Dependency] private readonly IUserInterfaceManager _userInterfaceManager = default!;
+    [Dependency] private readonly IGtkUserInterfaceManager _gtkUserInterfaceManager = default!;
 
     public override void Init()
     {
+        ClientContentIoC.Register();
+        
         var factory = IoCManager.Resolve<IComponentFactory>();
         var prototypes = IoCManager.Resolve<IPrototypeManager>();
 
@@ -36,10 +37,11 @@ public sealed class EntryPoint : GameClient
             prototypes.RegisterIgnore(ignoreName);
         }
 
-        ClientContentIoC.Register();
-
         IoCManager.BuildGraph();
         IoCManager.InjectDependencies(this);
+        
+        // Initialize IoC
+        _gtkUserInterfaceManager.Initialize();
 
         factory.GenerateNetIds();
     }
@@ -48,7 +50,7 @@ public sealed class EntryPoint : GameClient
     {
         base.PostInit();
             
-        // DEVNOTE: The line below will disable lighting, so you can see in-game sprites without the need for lights
+        // Disabled engine light system
         IoCManager.Resolve<ILightManager>().Enabled = false;
 
         var stateManager = IoCManager.Resolve<IStateManager>();

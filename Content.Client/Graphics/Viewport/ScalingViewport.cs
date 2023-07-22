@@ -103,7 +103,10 @@ public sealed class ScalingViewport : Control, IViewportControl
         //TODO: Make tile drawing (so we need other objects)
         //TODO2: Make entities drawing with SpriteComponent from content code
 
-        var texture = new GraphicsTexture("/Textures/Mobs/Cats/cat_wizard.rsi", "dummy");
+        var texture = new GraphicsTexture("/Textures/Mobs/Cats/wizard.rsi", "dummy")
+        {
+            Direction = Direction.East
+        };
         DrawTexture(handle, texture, drawBox);
 
         // draw non used area

@@ -9,58 +9,33 @@ namespace Content.Client.Graphics;
 [Virtual]
 public class GraphicsTexture
 {
-    private SpriteSpecifier.Texture? _frame;
-    private SpriteSpecifier.Rsi? _rsi;
-    private string? _state;
     private string? _path;
     private Direction _dir;
 
-    private bool _isRsi = false;
-    
-    public Texture Texture { get; internal set; }
+    public Texture Texture { get; private set; }
     
     public string? TexturePath
     {
         get => _path;
-        set
+        init
         {
             _path = value;
             Frame = new SpriteSpecifier.Texture(new ResPath(_path ?? string.Empty));
         }
     }
     
-    public SpriteSpecifier.Texture? Frame
-    {
-        get => _frame;
-        internal set
-        {
-            _frame = value;
-            if (_frame != null)
-                Texture = _frame.DirFrame0().TextureFor(_dir);
-        }
-    }
-    
-    public SpriteSpecifier.Rsi? Rsi
-    {
-        get => _rsi;
-        internal set
-        {
-            _rsi = value;
-            if (_rsi != null)
-                Texture = _rsi.DirFrame0().TextureFor(_dir);
-        }
-    }
-    
+    public SpriteSpecifier.Texture? Frame { get; internal set; }
+
+    public SpriteSpecifier.Rsi? Rsi { get; internal init; }
+
     public Direction Direction
     {
         get => _dir;
         set
         {
             _dir = value;
-            if (_frame != null)
-                Texture = _frame.DirFrame0().TextureFor(_dir);
-            else if (_rsi != null)
-                Texture = _rsi.DirFrame0().TextureFor(_dir);
+            if (Rsi != null)
+                Texture = Rsi.DirFrame0().TextureFor(_dir);
         }
     }
 
@@ -71,32 +46,27 @@ public class GraphicsTexture
 
     public string? State
     {
-        get => _state;
-        set
-        {
-            _state = value;
-            Rsi = new SpriteSpecifier.Rsi(new ResPath(TexturePath ?? string.Empty), _state ?? string.Empty);
-        }
+        get => Rsi?.RsiState;
     }
 
     public GraphicsTexture(string texPath, string rsiState = "")
     {
-        _isRsi = rsiState != "";
+        var isRsi = rsiState != "";
 
         TexturePath = texPath;
-        if (_isRsi)
+        
+        if (isRsi)
         {
-            State = rsiState;
-            Rsi = new SpriteSpecifier.Rsi(new ResPath(TexturePath), State);
-            Texture = Rsi.DirFrame0().Default;
-            Size = Rsi.DirFrame0().Default.Size;
+            Rsi = new SpriteSpecifier.Rsi(new ResPath(TexturePath), rsiState);
+            Texture = Rsi.DirFrame0().TextureFor(0);
         }
         else
         {
             Frame = new SpriteSpecifier.Texture(new ResPath(TexturePath));
             Texture = Frame.DirFrame0().Default;
-            Size = Frame.DirFrame0().Default.Size;
         }
+        
+        Size = Texture.Size;
         Direction = Direction.South;
         Scale = Vector2.One;
         Rect = new UIBox2(Vector2.Zero, Size);

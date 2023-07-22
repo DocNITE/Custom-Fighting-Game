@@ -27,6 +27,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entity\" />
+    <Folder Include="UserInterfaces\Manager\" />
   </ItemGroup>
   <Import Project="..\RobustToolbox\MSBuild\Robust.Engine.targets" />
   <Import Project="..\RobustToolbox\MSBuild\XamlIL.targets" />
