@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client.UserInterfaces;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
 using Robust.Client.UserInterface;
@@ -10,10 +11,11 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace Content.Client.Graphics.Viewport;
 
-public sealed class ScalingViewport : Control, IViewportControl
+public sealed class ScalingViewport : Control, IViewportControl, IViewportDrawing
 {
     [Dependency] private readonly IClyde _clyde = default!;
     [Dependency] private readonly IInputManager _inputManager = default!;
+    [Dependency] private readonly IGtkUserInterfaceManager _gtkUserInterfaceManager = default!;
 
     private Vector2i _viewportSize;
     private Vector2i _physicalSize;
@@ -102,13 +104,24 @@ public sealed class ScalingViewport : Control, IViewportControl
         
         //TODO: Make tile drawing (so we need other objects)
         //TODO2: Make entities drawing with SpriteComponent from content code
-
-        var texture = new GraphicsTexture("/Textures/Mobs/Cats/wizard.rsi", "dummy")
+        //TODO: We should use Color modulate for drawing. If we wanna add some dark tiles idk (just use alpha channel color)
+        
+        /* Just example
+         var texture = new GraphicsTexture("/Textures/Mobs/Cats/wizard.rsi", "dummy")
         {
             Direction = Direction.East
         };
         DrawTexture(handle, texture, drawBox);
+        */
 
+        // TODO: Make ui drawing
+        var uiManagerRoot = _gtkUserInterfaceManager.RootScreen;
+        for (var i = 0; i < uiManagerRoot.ChildCount; i++)
+        {
+            var widget = uiManagerRoot.Children[i];
+            widget.Draw(handle, this);
+        }
+        
         // draw non used area
         handle.DrawRect(new UIBox2(new Vector2(0,0), new Vector2(Size.X, drawBox.Top)), Color.Black, true);
         handle.DrawRect(new UIBox2(new Vector2(drawBox.Right,0), new Vector2(Size.X, Size.Y)), Color.Black, true);
@@ -116,7 +129,7 @@ public sealed class ScalingViewport : Control, IViewportControl
         handle.DrawRect(new UIBox2(new Vector2(0,0), new Vector2(drawBox.Left, Size.Y)), Color.Black, true);
     }
 
-    private UIBox2i GetDrawBox()
+    public UIBox2i GetDrawBox()
     {
 
         var vpSize = ViewportSize;
@@ -141,9 +154,12 @@ public sealed class ScalingViewport : Control, IViewportControl
         }
     }
 
-    public void DrawTexture(DrawingHandleScreen handle, GraphicsTexture texture, UIBox2i drawBox)
+    public void DrawTexture(DrawingHandleScreen handle, GraphicsTexture texture)
     {
         //var texture = new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/default.png")).DirFrame0().Default;
+        // WARNING: Monkey code! It can be make most slowly game work
+        var drawBox = GetDrawBox();
+        
         var textureScale = texture.Scale;
         var textureSize = texture.Size;
         var textureRect = texture.Rect;
