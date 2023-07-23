@@ -12,7 +12,7 @@ public partial class GtkLabel : GtkWidget
     public string Content = "Hey Cinka... Do you wanna some novel? :3 |||||";
     public string FontId = "kitchen-sink";
 
-    public FontStyle FontStyle = FontStyle.Normal;
+    public FontStyle FontStyle = FontStyle.Box;
     
     public override void Draw(GtkDrawingHandle handle)
     {
