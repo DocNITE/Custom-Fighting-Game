@@ -12,6 +12,7 @@ public partial class GtkWidget : IDisposable
     private GtkWidget? _parent;
 
     private Vector2 _position = new Vector2(0, 0);
+    private Vector2 _physicalPosition = new Vector2(0, 0);
     private Vector2 _size = new Vector2(0, 0);
 
     public List<GtkWidget> Children { get; }
@@ -30,7 +31,17 @@ public partial class GtkWidget : IDisposable
     public Vector2 Position 
     { 
         get => _position;
-        set => _position = value;
+        set
+        {
+            _physicalPosition = Parent?.PhysicalPosition ?? value;
+            _position = value;
+        }
+    }
+    
+    public Vector2 PhysicalPosition 
+    { 
+        get => _physicalPosition;
+        private set => _physicalPosition = value;
     }
     
     public Vector2 Size 
@@ -47,8 +58,9 @@ public partial class GtkWidget : IDisposable
         Children = _orderedChildren;
     }
 
-    public virtual void Draw(DrawingHandleScreen handle, IViewportDrawing drawingMethods)
+    public virtual void Draw(GtkDrawingHandle handle)
     {
+        
     }
 
     public void AddChild(GtkWidget child)

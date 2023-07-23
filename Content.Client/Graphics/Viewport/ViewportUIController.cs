@@ -1,6 +1,7 @@
 using Content.Client.States;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface.Controllers;
+using Robust.Shared.Configuration;
 
 namespace Content.Client.Graphics.Viewport;
 
@@ -10,11 +11,15 @@ public sealed class ViewportUiController : UIController
     public static readonly Vector2i ViewportSize = (EyeManager.PixelsPerMeter * 21, EyeManager.PixelsPerMeter * 15);
     public const int ViewportHeight = 15;
     private MainViewport? Viewport => UIManager.ActiveScreen?.GetWidget<MainViewport>();
+    
+    [Dependency] private readonly IConfigurationManager _cfg = default!;
 
     public override void Initialize()
     {
         var gameplayStateLoad = UIManager.GetUIController<GameplayStateLoadController>();
         gameplayStateLoad.OnScreenLoad += OnScreenLoad;
+
+        IoCManager.InjectDependencies(this);
     }
 
     private void OnScreenLoad()
@@ -39,7 +44,7 @@ public sealed class ViewportUiController : UIController
         }
 
         Viewport.Viewport.ViewportSize = (EyeManager.PixelsPerMeter * width, EyeManager.PixelsPerMeter * ViewportHeight);
-        Viewport.Viewport.PhysicalSize = (800, 600);
+        Viewport.Viewport.PhysicalSize = (_cfg.GetCVar<int>("viewport.physical_width"), _cfg.GetCVar<int>("viewport.physical_height"));
     }
 
     public void ReloadViewport()
