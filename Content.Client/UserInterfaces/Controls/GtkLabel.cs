@@ -19,8 +19,6 @@ public partial class GtkLabel : GtkWidget
         base.Draw(handle);
 
         // TODO Make text wrap, with widget size
-        // TODO Make local position and global position for widget
-        // we might be make some GtkWidget generic
         // TODO Add shader support for fonts
         
         var bytes = Encoding.ASCII.GetBytes(Content);
@@ -31,8 +29,8 @@ public partial class GtkLabel : GtkWidget
             tex.Position = new Vector2(xPos, tex.Position.Y);
 
             xPos += (tex.Size.X + 1) * handle.CurrentRenderScale;
-            
-            handle.DrawGlobalTexture(tex); // TODO: Make local drawing for widget
+
+            DrawTexture(handle, tex);
         }
     }
 }

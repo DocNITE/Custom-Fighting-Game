@@ -17,9 +17,7 @@ public sealed partial class GtkDrawingHandle : IGtkDrawingHandle
         _handle = handle;
         _drawing = drawing;
     }
-    
-    //TODO Make DrawTexture - for widget drawing lol
-    
+
     public void DrawGlobalTexture(GraphicsTexture texture, Color? modulate = null) => _drawing.DrawTexture(_handle, texture, modulate);
 
     public void UseShader(ShaderInstance? shader) => _handle.UseShader(shader);

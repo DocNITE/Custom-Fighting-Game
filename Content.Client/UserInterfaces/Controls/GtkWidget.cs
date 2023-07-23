@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client.Graphics;
 using Content.Client.Graphics.Viewport;
 using JetBrains.Annotations;
 using Robust.Client.Graphics;
@@ -25,6 +26,7 @@ public partial class GtkWidget : IDisposable
         private set
         {
             _parent = value;
+            InvalidateWidget();
         }
     }
     
@@ -33,8 +35,8 @@ public partial class GtkWidget : IDisposable
         get => _position;
         set
         {
-            _physicalPosition = Parent?.PhysicalPosition ?? value;
             _position = value;
+            InvalidateWidget();
         }
     }
     
@@ -47,7 +49,11 @@ public partial class GtkWidget : IDisposable
     public Vector2 Size 
     { 
         get => _size;
-        set => _size = value;
+        set
+        {
+            _size = value;
+            InvalidateWidget();
+        }
     }
 
     public IGtkUserInterfaceManager UserInterfaceManager { get; }
@@ -60,7 +66,23 @@ public partial class GtkWidget : IDisposable
 
     public virtual void Draw(GtkDrawingHandle handle)
     {
-        
+        // Draw childs
+        DrawChilds(handle);
+    }
+
+    public virtual void DrawChilds(GtkDrawingHandle handle)
+    {
+        for (var i = 0; i < ChildCount; i++)
+        {
+            var widget = Children[0];
+            widget.Draw(handle);
+        }
+    }
+
+    protected virtual void DrawTexture(GtkDrawingHandle handle, GraphicsTexture texture, Color? modulate = null)
+    {
+        texture.Position += PhysicalPosition;
+        handle.DrawGlobalTexture(texture, modulate);
     }
 
     public void AddChild(GtkWidget child)
@@ -74,6 +96,11 @@ public partial class GtkWidget : IDisposable
     {
         _orderedChildren.Remove(child);
         child.Parent = null;
+    }
+
+    private void InvalidateWidget()
+    {
+        _physicalPosition = Parent?.PhysicalPosition + Position ?? Position;
     }
     
     public bool Disposed { get; private set; }

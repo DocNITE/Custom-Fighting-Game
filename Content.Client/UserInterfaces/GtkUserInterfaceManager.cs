@@ -24,10 +24,6 @@ internal sealed class GtkUserInterfaceManager : IGtkUserInterfaceManager
     {
         var gtkHandle = new GtkDrawingHandle(handle, methods);
         // Draw main root content
-        for (var i = 0; i < RootScreen.ChildCount; i++)
-        {
-            var widget = RootScreen.Children[i];
-            widget.Draw(gtkHandle);
-        }
+        RootScreen.DrawChilds(gtkHandle);
     }
 }

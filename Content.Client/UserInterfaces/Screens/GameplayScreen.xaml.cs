@@ -1,3 +1,4 @@
+using System.Numerics;
 using Content.Client.Graphics.Fonts;
 using Content.Client.Resources;
 using Content.Client.UserInterfaces.Controls;
@@ -34,8 +35,14 @@ public partial class GameplayScreen : UIScreen
         SetAnchorPreset(ViewportContainer, LayoutPreset.Wide);
 
         // TODO: DEBUG
-        var widget = new GtkLabel();
+        var widget = new GtkWidget();
         IoCManager.Resolve<IGtkUserInterfaceManager>().RootScreen.AddChild(widget);
+        widget.Position = new Vector2(400, 50);
+
+        var text = new GtkLabel();
+        text.Content = "Ahah some cool text! :3";
+        text.Position = new Vector2(0, 400);
+        widget.AddChild(text);
     }
 
     protected override void Draw(DrawingHandleScreen handle)
