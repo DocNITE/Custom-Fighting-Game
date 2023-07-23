@@ -1,6 +1,6 @@
 using Content.Client.UserInterfaces;
 
-namespace Content.Client;
+namespace Content.Client.IoC;
 
 internal static class ClientContentIoC
 {

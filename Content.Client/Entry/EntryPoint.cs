@@ -1,3 +1,4 @@
+using Content.Client.IoC;
 using Content.Client.States;
 using Content.Client.UserInterfaces;
 using JetBrains.Annotations;
@@ -10,7 +11,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 // DEVNOTE: Games that want to be on the hub can change their namespace prefix in the "manifest.yml" file.
-namespace Content.Client;
+namespace Content.Client.Entry;
 
 [UsedImplicitly]
 public sealed class EntryPoint : GameClient

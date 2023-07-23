@@ -1,4 +1,4 @@
-namespace Content.Client;
+namespace Content.Client.Entry;
 
 public static class IgnoredPrototypes
 {

@@ -34,7 +34,7 @@ public partial class GameplayScreen : UIScreen
         SetAnchorPreset(ViewportContainer, LayoutPreset.Wide);
 
         // TODO: DEBUG
-        var widget = new GtkWindow();
+        var widget = new GtkLabel();
         IoCManager.Resolve<IGtkUserInterfaceManager>().RootScreen.AddChild(widget);
     }
 

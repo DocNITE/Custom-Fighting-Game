@@ -1,3 +1,4 @@
+using System.Numerics;
 using System.Text;
 using Robust.Shared.Prototypes;
 
@@ -11,21 +12,26 @@ public sealed class FontTexture : GraphicsTexture
         .Index<FontPrototype>(fontId).Atlas)
     {
         _fontId = fontId;
-        // Encoding.ASCII.GetBytes(c.ToString())[0]
+        CreateTexture(Encoding.ASCII.GetBytes(c.ToString())[0]);
     }
 
     public FontTexture(string fontId, byte c) : base(IoCManager.Resolve<IPrototypeManager>()
         .Index<FontPrototype>(fontId).Atlas)
     {
         _fontId = fontId;
-        // TODO: Make for byte type too
+        CreateTexture(c);
     }
 
     private void CreateTexture(byte c)
     {
         var proto = IoCManager.Resolve<IPrototypeManager>().Index<FontPrototype>(_fontId);
-        // get max width - Size.X/FontPrototype.Width = (16)
-        // get Y - byte/max width = (y char position)
-        // get X - ( (y char position) + 1 ) - byte = (x char position)
+        var maxTextureWidth = Size.X / proto.Width;
+        var y = (float)Math.Floor(c / maxTextureWidth);
+        var x = (float)(16 - Math.Floor(((y + 1) * maxTextureWidth) - c)); // Need to revert that shit
+
+        Rect = new UIBox2(
+            new Vector2(x * proto.Width, y * proto.Height), 
+            new Vector2((x * proto.Width) + proto.Width, (y * proto.Height) + proto.Height));
+        Size = new Vector2(proto.Width, proto.Height);
     }
 }
