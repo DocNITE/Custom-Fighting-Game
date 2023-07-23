@@ -9,6 +9,11 @@ namespace Content.Client.UserInterfaces.Controls;
 public partial class GtkWindow : GtkWidget
 {
     public string Content = "";
+
+    public GtkWindow()
+    {
+        // hm
+    }
     
     public override void Draw(DrawingHandleScreen handle, IViewportDrawing drawingMethods)
     {
@@ -27,8 +32,8 @@ public partial class GtkWindow : GtkWidget
         tex3.Size = new Vector2(16, 16);
         tex3.Position = new Vector2(32*2, 0);
         
-        drawingMethods.DrawTexture(handle, tex1);
-        drawingMethods.DrawTexture(handle, tex2);
-        drawingMethods.DrawTexture(handle, tex3);
+        drawingMethods.DrawTexture(handle, tex1, new Color(255, 255, 255, 20));
+        drawingMethods.DrawTexture(handle, tex2, new Color(255, 255, 255, 90));
+        drawingMethods.DrawTexture(handle, tex3, new Color(255, 255, 255, 180));
     }
 }

@@ -156,6 +156,11 @@ public sealed class ScalingViewport : Control, IViewportControl, IViewportDrawin
 
     public void DrawTexture(DrawingHandleScreen handle, GraphicsTexture texture)
     {
+        DrawTexture(handle, texture, null);
+    }
+    
+    public void DrawTexture(DrawingHandleScreen handle, GraphicsTexture texture, Color? modulate = null)
+    {
         //var texture = new SpriteSpecifier.Texture(new ResPath("/Textures/Arts/default.png")).DirFrame0().Default;
         // WARNING: Monkey code! It can be make most slowly game work
         var drawBox = GetDrawBox();
@@ -177,7 +182,8 @@ public sealed class ScalingViewport : Control, IViewportControl, IViewportDrawin
             new UIBox2(
                 textureLocalPosition, 
                 textureLocalPosition + textureLocalSize),
-            textureRect
+            textureRect,
+            modulate
         );
     }
 

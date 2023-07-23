@@ -1,7 +1,7 @@
 using System.Numerics;
 using Robust.Client.Graphics;
 
-namespace Content.Client.Graphics.Sprite;
+namespace Content.Client.Graphics.Sprites;
 
 [RegisterComponent]
 public sealed class SpriteEntityComponent : Component

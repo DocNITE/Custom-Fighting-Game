@@ -1,3 +1,4 @@
+# Default font for engine
 - type: font
   id: SpaceMonoBold
   path: /Fonts/SpaceMono/SpaceMono-Bold.ttf
@@ -13,3 +14,10 @@
 - type: font
   id: SpaceMonoRegular
   path: /Fonts/SpaceMono/SpaceMono-Regular.ttf
+  
+# Game fonts
+- type: fontPrototype
+  id: kitchen-sink
+  atlas: /Textures/Fonts/kitchen-sink.png
+  width: 6
+  height: 8
