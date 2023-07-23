@@ -104,8 +104,6 @@ public sealed class ScalingViewport : Control, IViewportControl, IViewportDrawin
         
         //TODO: Make tile drawing (so we need other objects)
         //TODO2: Make entities drawing with SpriteComponent from content code
-        //TODO: We should use Color modulate for drawing. If we wanna add some dark tiles idk (just use alpha channel color)
-        
         /* Just example
          var texture = new GraphicsTexture("/Textures/Mobs/Cats/wizard.rsi", "dummy")
         {
@@ -113,15 +111,10 @@ public sealed class ScalingViewport : Control, IViewportControl, IViewportDrawin
         };
         DrawTexture(handle, texture, drawBox);
         */
-
-        // TODO: Make ui drawing
-        var uiManagerRoot = _gtkUserInterfaceManager.RootScreen;
-        for (var i = 0; i < uiManagerRoot.ChildCount; i++)
-        {
-            var widget = uiManagerRoot.Children[i];
-            widget.Draw(handle, this);
-        }
         
+        // Draw UI content
+        _gtkUserInterfaceManager.DrawWidgets(handle, this);
+
         // draw non used area
         handle.DrawRect(new UIBox2(new Vector2(0,0), new Vector2(Size.X, drawBox.Top)), Color.Black, true);
         handle.DrawRect(new UIBox2(new Vector2(drawBox.Right,0), new Vector2(Size.X, Size.Y)), Color.Black, true);

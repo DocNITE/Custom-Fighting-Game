@@ -1,4 +1,5 @@
-using System.Numerics;
+/*
+ * using System.Numerics;
 using Content.Client.Graphics;
 using Content.Client.Graphics.Viewport;
 using Robust.Client.Graphics;
@@ -15,9 +16,9 @@ public partial class GtkWindow : GtkWidget
         // hm
     }
     
-    public override void Draw(DrawingHandleScreen handle, IViewportDrawing drawingMethods)
+    public override void Draw(GtkDrawingHandle handle)
     {
-        base.Draw(handle, drawingMethods);
+        base.Draw(handle);
 
         var tex1 = new GraphicsTexture("/Textures/Interface/Window.png");
         tex1.Rect = new UIBox2(Vector2.Zero, new Vector2(16, 16));
@@ -32,8 +33,9 @@ public partial class GtkWindow : GtkWidget
         tex3.Size = new Vector2(16, 16);
         tex3.Position = new Vector2(32*2, 0);
         
-        drawingMethods.DrawTexture(handle, tex1, new Color(255, 255, 255, 20));
-        drawingMethods.DrawTexture(handle, tex2, new Color(255, 255, 255, 90));
-        drawingMethods.DrawTexture(handle, tex3, new Color(255, 255, 255, 180));
+        handle.DrawGlobalTexture(tex1, new Color(255, 255, 255, 20));
+        handle.DrawGlobalTexture(tex2, new Color(255, 255, 255, 90));
+        handle.DrawGlobalTexture(tex3, new Color(255, 255, 255, 180));
     }
 }
+ */
