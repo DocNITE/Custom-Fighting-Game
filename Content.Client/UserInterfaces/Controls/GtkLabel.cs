@@ -9,7 +9,7 @@ namespace Content.Client.UserInterfaces.Controls;
 [Virtual]
 public partial class GtkLabel : GtkWidget
 {
-    public string Content = "Hey Cinka... Do you wanna some novel? :3";
+    public string Content = "Hey Cinka... Do you wanna some novel? :3 |||||";
     public string FontId = "kitchen-sink";
     
     public override void Draw(DrawingHandleScreen handle, IViewportDrawing drawingMethods)
@@ -25,7 +25,7 @@ public partial class GtkLabel : GtkWidget
         var xPos = 0.0f;
         foreach (var item in bytes)
         {
-            var tex = new FontTexture(FontId, item);
+            var tex = new FontTexture(FontId, item, FontStyle.Normal);
             tex.Position = new Vector2(xPos, tex.Position.Y);
 
             xPos += (tex.Size.X + 1) * drawingMethods.CurrentRenderScale;
