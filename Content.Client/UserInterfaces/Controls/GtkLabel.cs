@@ -7,12 +7,14 @@ using Robust.Client.Graphics;
 
 namespace Content.Client.UserInterfaces.Controls;
 
+// TODO Add shader support for fonts
+// TODO Add normal Y Padding with font height
 [Virtual]
 public partial class GtkLabel : GtkWidget
 {
     private readonly char _wrapIdentifier = ' ';
     private readonly float _xPadding = 1.0f;
-    private readonly float _yPadding = 10.0f;
+    private readonly float _yPadding = 10.0f; // need rework
     
     public string Content = "";
     public string FontId = "kitchen-sink";
@@ -22,8 +24,6 @@ public partial class GtkLabel : GtkWidget
     public override void Draw(GtkDrawingHandle handle)
     {
         base.Draw(handle);
-        
-        // TODO Add shader support for fonts
 
         var data = new DrawingTextData(Content, FontId, FontStyle, _xPadding, handle.CurrentRenderScale);
 
