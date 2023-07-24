@@ -11,7 +11,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace Content.Client.Graphics.Viewport;
 
-public sealed class ScalingViewport : Control, IViewportControl, IViewportDrawing
+public sealed class ScalingViewport : Control, IViewportControl, IMesaDrawing
 {
     [Dependency] private readonly IClyde _clyde = default!;
     [Dependency] private readonly IInputManager _inputManager = default!;
@@ -178,6 +178,48 @@ public sealed class ScalingViewport : Control, IViewportControl, IViewportDrawin
             textureRect,
             modulate
         );
+    }
+
+    public void DrawRectangle(DrawingHandleScreen handle, UIBox2 rect, Color modulate, bool filled = false)
+    {
+        var drawBox = GetDrawBox();
+
+        var size = rect.BottomRight - rect.TopLeft;
+        var position = rect.TopLeft;
+        
+        var localSize = new Vector2(
+            drawBox.Width/( _physicalSize.X / ((size.X*_curRenderScale)*size.X) ), 
+            drawBox.Height/( _physicalSize.Y / ((size.Y*_curRenderScale)*size.Y) ));
+        var localPosition = new Vector2((float)drawBox.TopLeft.X, (float)drawBox.TopLeft.Y) + 
+                            position * new Vector2(
+                                       (float)drawBox.Size.X / (float)_physicalSize.X, 
+                                       (float)drawBox.Size.X / (float)_physicalSize.X);
+        
+        handle.DrawRect(
+            new UIBox2(
+                localPosition, 
+                localPosition + localSize),
+            modulate,
+            filled
+        );
+    }
+
+    public void DrawLine(DrawingHandleScreen handle, Vector2 from, Vector2 to, Color color)
+    {
+        var drawBox = GetDrawBox();
+
+        var size = from - to;
+        var position = from;
+        
+        var localSize = new Vector2(
+            drawBox.Width/( _physicalSize.X / ((size.X*_curRenderScale)*size.X) ), 
+            drawBox.Height/( _physicalSize.Y / ((size.Y*_curRenderScale)*size.Y) ));
+        var localPosition = new Vector2((float)drawBox.TopLeft.X, (float)drawBox.TopLeft.Y) + 
+                            position * new Vector2(
+                                (float)drawBox.Size.X / (float)_physicalSize.X, 
+                                (float)drawBox.Size.X / (float)_physicalSize.X);
+        
+        handle.DrawLine(localPosition, localPosition + localSize, color);
     }
 
     protected override void Resized()

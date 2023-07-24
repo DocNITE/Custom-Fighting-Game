@@ -20,7 +20,7 @@ internal sealed class GtkUserInterfaceManager : IGtkUserInterfaceManager
         RootScreen.Size = new Vector2(_cfg.GetCVar<int>("viewport.physical_width"), _cfg.GetCVar<int>("viewport.physical_height"));
     }
 
-    public void DrawWidgets(DrawingHandleScreen handle, IViewportDrawing methods)
+    public void DrawWidgets(DrawingHandleScreen handle, IMesaDrawing methods)
     {
         var gtkHandle = new GtkDrawingHandle(handle, methods);
         // Draw main root content

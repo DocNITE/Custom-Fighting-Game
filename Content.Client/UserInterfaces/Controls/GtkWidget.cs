@@ -66,7 +66,6 @@ public partial class GtkWidget : IDisposable
 
     public virtual void Draw(GtkDrawingHandle handle)
     {
-        // Draw childs
         DrawChilds(handle);
     }
 

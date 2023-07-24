@@ -2,8 +2,6 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using Content.Client.Graphics.Fonts;
-using Content.Client.Graphics.Viewport;
-using Robust.Client.Graphics;
 
 namespace Content.Client.UserInterfaces.Controls;
 

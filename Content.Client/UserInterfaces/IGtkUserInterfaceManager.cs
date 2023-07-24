@@ -10,5 +10,5 @@ public interface IGtkUserInterfaceManager
 
     void Initialize();
 
-    void DrawWidgets(DrawingHandleScreen handle, IViewportDrawing methods);
+    void DrawWidgets(DrawingHandleScreen handle, IMesaDrawing methods);
 }
