@@ -2,6 +2,8 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using Content.Client.Graphics.Fonts;
+using Robust.Client.Animations;
+using Robust.Shared.Animations;
 
 namespace Content.Client.UserInterfaces.Controls;
 
@@ -16,9 +18,10 @@ public partial class GtkLabel : GtkWidget
     
     public string Content = "";
     public string FontId = "kitchen-sink";
+    public int FontScale = 1;
 
     public FontStyle FontStyle = FontStyle.Box;
-    
+
     public override void Draw(GtkDrawingHandle handle)
     {
         base.Draw(handle);
@@ -33,7 +36,7 @@ public partial class GtkLabel : GtkWidget
         {
             currentContent += str;
 
-            if (data.GetSize(currentContent) <= Size.X)
+            if ((data.GetSize(currentContent) * FontScale) <= Size.X)
             {
                 contentList.Add(new TextLine(str, false));
             }
@@ -77,8 +80,9 @@ public partial class GtkLabel : GtkWidget
                 xPos = 0.0f;
                 continue;
             }
-            
-            tex.Position = new Vector2(xPos, yPos);
+
+            tex.Scale = new Vector2(FontScale, FontScale);
+            tex.Position = new Vector2(xPos * FontScale, yPos * FontScale);
             DrawTexture(handle, tex);
             xPos += (tex.Size.X + _xPadding) * handle.CurrentRenderScale;
         }

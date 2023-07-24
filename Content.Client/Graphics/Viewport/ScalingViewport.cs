@@ -6,6 +6,7 @@ using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.Utility;
 using Robust.Shared.Map;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -113,13 +114,18 @@ public sealed class ScalingViewport : Control, IViewportControl, IMesaDrawing
         */
         
         // Draw UI content
-        _gtkUserInterfaceManager.DrawWidgets(handle, this);
+        _gtkUserInterfaceManager.Draw(handle, this);
 
         // draw non used area
         handle.DrawRect(new UIBox2(new Vector2(0,0), new Vector2(Size.X, drawBox.Top)), Color.Black, true);
         handle.DrawRect(new UIBox2(new Vector2(drawBox.Right,0), new Vector2(Size.X, Size.Y)), Color.Black, true);
         handle.DrawRect(new UIBox2(new Vector2(0,drawBox.Bottom), new Vector2(Size.X, Size.Y)), Color.Black, true);
         handle.DrawRect(new UIBox2(new Vector2(0,0), new Vector2(drawBox.Left, Size.Y)), Color.Black, true);
+    }
+
+    protected override void FrameUpdate(FrameEventArgs args)
+    {
+        _gtkUserInterfaceManager.FrameUpdate(args);
     }
 
     public UIBox2i GetDrawBox()
@@ -237,7 +243,7 @@ public sealed class ScalingViewport : Control, IViewportControl, IMesaDrawing
     private void EnsureViewportCreated()
     {
         if (_initialized) return;
-        _curRenderScale = 2;
+        _curRenderScale = 1;
         _initialized = !_initialized;
     }
 

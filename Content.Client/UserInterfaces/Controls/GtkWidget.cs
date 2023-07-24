@@ -2,7 +2,10 @@ using System.Numerics;
 using Content.Client.Graphics;
 using Content.Client.Graphics.Viewport;
 using JetBrains.Annotations;
+using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
+using Robust.Shared.Animations;
+using Robust.Shared.Timing;
 
 namespace Content.Client.UserInterfaces.Controls;
 
@@ -30,6 +33,7 @@ public partial class GtkWidget : IDisposable
         }
     }
     
+    [Animatable]
     public Vector2 Position 
     { 
         get => _position;
@@ -40,12 +44,14 @@ public partial class GtkWidget : IDisposable
         }
     }
     
+    [Animatable]
     public Vector2 PhysicalPosition 
     { 
         get => _physicalPosition;
         private set => _physicalPosition = value;
     }
     
+    [Animatable]
     public Vector2 Size 
     { 
         get => _size;
@@ -67,6 +73,24 @@ public partial class GtkWidget : IDisposable
     public virtual void Draw(GtkDrawingHandle handle)
     {
         DrawChilds(handle);
+    }
+
+    public virtual void FrameUpdate(FrameEventArgs args)
+    {
+        ProcessAnimations(args);
+    }
+    
+    internal int DoFrameUpdateRecursive(FrameEventArgs args)
+    {
+        var total = 1;
+        FrameUpdate(args);
+
+        foreach (var child in Children)
+        {
+            total += child.DoFrameUpdateRecursive(args);
+        }
+
+        return total;
     }
 
     public virtual void DrawChilds(GtkDrawingHandle handle)
@@ -99,7 +123,7 @@ public partial class GtkWidget : IDisposable
 
     private void InvalidateWidget()
     {
-        _physicalPosition = Parent?.PhysicalPosition + Position ?? Position;
+        _physicalPosition = (Parent?.PhysicalPosition + Position ?? Position) * UserInterfaceManager.CurrentRenderScale;
     }
     
     public bool Disposed { get; private set; }
