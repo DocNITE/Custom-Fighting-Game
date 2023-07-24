@@ -40,8 +40,9 @@ public partial class GameplayScreen : UIScreen
         widget.Position = new Vector2(400, 50);
 
         var text = new GtkLabel();
-        text.Content = "Ahah some cool text! :3";
-        text.Position = new Vector2(0, 400);
+        text.Content = "  Ahah some cool text! Yeah, i know it...\n\n   Realy looks cool lol :3";
+        text.Position = new Vector2(0, 200);
+        text.Size = new Vector2(350, 200);
         widget.AddChild(text);
     }
 

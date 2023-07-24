@@ -7,7 +7,7 @@ namespace Content.Client.Graphics.Fonts;
 public enum FontStyle
 {
     Box = 0,
-    Normal = 1
+    Normal = 1 // DO NOT USE!!!
 }
 
 public sealed class FontTexture : GraphicsTexture
