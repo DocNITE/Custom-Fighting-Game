@@ -1,14 +1,17 @@
+using System.Linq;
 using System.Numerics;
 using Content.Client.Graphics;
 using Content.Client.Graphics.Viewport;
 using JetBrains.Annotations;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
+using Robust.Client.UserInterface;
 using Robust.Shared.Animations;
 using Robust.Shared.Timing;
 
 namespace Content.Client.UserInterfaces.Controls;
 
+//TODO: Need make input system for gtkWidget
 [Virtual, PublicAPI]
 public partial class GtkWidget : IDisposable
 {
@@ -19,7 +22,9 @@ public partial class GtkWidget : IDisposable
     private Vector2 _physicalPosition = new Vector2(0, 0);
     private Vector2 _size = new Vector2(0, 0);
 
-    public List<GtkWidget> Children { get; }
+    private int _zindex = 0;
+
+    public List<GtkWidget> Children { get; private set; }
 
     public int ChildCount => _orderedChildren.Count;
     
@@ -62,6 +67,20 @@ public partial class GtkWidget : IDisposable
         }
     }
 
+    // FIXME: It order parent child only when he HAS parent
+    public int ZIndex
+    {
+        get => _zindex;
+        set
+        {
+            _zindex = value;
+            Parent?.OrderChilds();
+            InvalidateWidget();
+        }
+    }
+    
+    public bool Visible { get; set; } = true; 
+
     public IGtkUserInterfaceManager UserInterfaceManager { get; }
     
     public GtkWidget()
@@ -72,6 +91,9 @@ public partial class GtkWidget : IDisposable
 
     public virtual void Draw(GtkDrawingHandle handle)
     {
+        if (!Visible)
+            return;
+        
         DrawChilds(handle);
     }
 
@@ -97,7 +119,7 @@ public partial class GtkWidget : IDisposable
     {
         for (var i = 0; i < ChildCount; i++)
         {
-            var widget = Children[0];
+            var widget = Children[i];
             widget.Draw(handle);
         }
     }
@@ -113,12 +135,14 @@ public partial class GtkWidget : IDisposable
         child.Parent?.RemoveChild(child);
         child.Parent = this;
         _orderedChildren.Add(child);
+        // FIXME: We might be use there OrderChilds()
     }
 
     public void RemoveChild(GtkWidget child)
     {
         _orderedChildren.Remove(child);
         child.Parent = null;
+        // FIXME: We might be use there OrderChilds()
     }
 
     private void InvalidateWidget()
@@ -130,6 +154,50 @@ public partial class GtkWidget : IDisposable
     
     public void Dispose()
     {
+        if (Disposed)
+            return;
+        
         Disposed = true;
+        Dispose(true);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposing)
+            return;
+        
+        foreach (var child in Children)
+        {
+            child.Parent = null;
+        }
+        
+        DisposeAllChildren();
+        Parent?.RemoveChild(this);
+    }
+    
+    public void DisposeAllChildren()
+    {
+        foreach (var child in Children)
+        {
+            child.Dispose();
+        }
+    }
+    
+    public void RemoveAllChildren()
+    {
+        foreach (var child in Children)
+        {
+            RemoveChild(child);
+        }
+    }
+    
+    public void Orphan()
+    {
+        Parent?.RemoveChild(this);
+    }
+
+    public void OrderChilds()
+    {
+        Children = Children.OrderBy(widget => widget.ZIndex).ToList();
     }
 }

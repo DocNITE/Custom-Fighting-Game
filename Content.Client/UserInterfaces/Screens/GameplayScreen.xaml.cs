@@ -48,6 +48,13 @@ public partial class GameplayScreen : UIScreen
         text.FontScale = 2;
         widget.AddChild(text);
         
+        var text2 = new GtkLabel();
+        text2.Content = "  Da fak?";
+        text2.Position = new Vector2(10, 0);
+        text2.Size = new Vector2(350, 200);
+        text2.FontScale = 2;
+        widget.AddChild(text2);
+        
         float _moveAniTime = 30f;
         
         var anim = new Animation
@@ -68,6 +75,12 @@ public partial class GameplayScreen : UIScreen
             }
         };
         text.PlayAnimation(anim, "lol");
+
+        var texture = new GtkTexture();
+        texture.Size = new Vector2(100, 100);
+        texture.TexturePath = "/Textures/Arts/chel.png";
+        widget.AddChild(texture);
+        texture.ZIndex = -4;
     }
 
     protected override void Draw(DrawingHandleScreen handle)
