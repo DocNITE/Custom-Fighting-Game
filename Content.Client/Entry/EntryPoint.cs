@@ -1,3 +1,4 @@
+using Content.Client.Input;
 using Content.Client.IoC;
 using Content.Client.Novel.Manager;
 using Content.Client.States;
@@ -20,6 +21,7 @@ public sealed class EntryPoint : GameClient
     [Dependency] private readonly IUserInterfaceManager _userInterfaceManager = default!;
     [Dependency] private readonly IGtkUserInterfaceManager _gtkUserInterfaceManager = default!;
     [Dependency] private readonly IVnSceneManager _vnSceneManager = default!;
+    [Dependency] private readonly InputHookupManager _inputHookupManager = default!;
 
     public override void Init()
     {
@@ -46,6 +48,7 @@ public sealed class EntryPoint : GameClient
         // Initialize IoC
         _gtkUserInterfaceManager.Initialize();
         _vnSceneManager.Initialize();
+        _inputHookupManager.Initialize();
 
         factory.GenerateNetIds();
     }

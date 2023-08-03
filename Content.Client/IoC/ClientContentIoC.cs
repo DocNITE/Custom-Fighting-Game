@@ -1,3 +1,4 @@
+using Content.Client.Input;
 using Content.Client.Novel.Manager;
 using Content.Client.UserInterfaces;
 
@@ -9,5 +10,6 @@ internal static class ClientContentIoC
     {
         IoCManager.Register<IGtkUserInterfaceManager, GtkUserInterfaceManager>();
         IoCManager.Register<IVnSceneManager, VnSceneManager>();
+        IoCManager.Register<InputHookupManager>();
     }
 }
