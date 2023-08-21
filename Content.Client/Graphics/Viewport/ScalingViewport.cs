@@ -255,6 +255,11 @@ public sealed class ScalingViewport : Control, IViewportControl, IMesaDrawing
         return new MapCoordinates();
     }
 
+    public MapCoordinates PixelToMap(Vector2 point)
+    {
+        throw new NotImplementedException();
+    }
+
     public Vector2 WorldToScreen(Vector2 map)
     {
         return new Vector2();
