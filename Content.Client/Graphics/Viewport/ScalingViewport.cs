@@ -113,6 +113,9 @@ public sealed class ScalingViewport : Control, IViewportControl, IMesaDrawing
         DrawTexture(handle, texture, drawBox);
         */
         
+        //TODO: Make 3d graphics (with sprites) for exploring mode
+        //handle.DrawPrimitives();
+        
         // Draw UI content
         _gtkUserInterfaceManager.Draw(handle, this);
 
