@@ -2,7 +2,7 @@ using Robust.Client.UserInterface.Controllers;
 
 namespace Content.Client.States;
 
-public sealed class GameplayStateLoadController : UIController
+public sealed class StateLoadController : UIController
 {
     public Action? OnScreenLoad;
     public Action? OnScreenUnload;

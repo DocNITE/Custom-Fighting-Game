@@ -1,4 +1,4 @@
-using Content.Client.Input;
+using Content.Client.GameMan;
 using Content.Client.IoC;
 using Content.Client.Novel.Manager;
 using Content.Client.States;
@@ -21,7 +21,7 @@ public sealed class EntryPoint : GameClient
     [Dependency] private readonly IUserInterfaceManager _userInterfaceManager = default!;
     [Dependency] private readonly IGtkUserInterfaceManager _gtkUserInterfaceManager = default!;
     [Dependency] private readonly IVnSceneManager _vnSceneManager = default!;
-    [Dependency] private readonly InputHookupManager _inputHookupManager = default!;
+    [Dependency] private readonly IGameMan _gameMan = default!;
 
     public override void Init()
     {
@@ -48,7 +48,7 @@ public sealed class EntryPoint : GameClient
         // Initialize IoC
         _gtkUserInterfaceManager.Initialize();
         _vnSceneManager.Initialize();
-        _inputHookupManager.Initialize();
+        _gameMan.Initialize();
 
         factory.GenerateNetIds();
     }
@@ -59,10 +59,10 @@ public sealed class EntryPoint : GameClient
             
         // Disabled engine light system
         IoCManager.Resolve<ILightManager>().Enabled = false;
+        // Disabled engine viewport
+        _userInterfaceManager.MainViewport.Visible = false;
 
         var stateManager = IoCManager.Resolve<IStateManager>();
-        
-        _userInterfaceManager.MainViewport.Visible = false;
          stateManager.RequestStateChange<GameplayState>();
          
         var client = IoCManager.Resolve<IBaseClient>();
@@ -72,12 +72,14 @@ public sealed class EntryPoint : GameClient
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
-        // DEVNOTE: You might want to do a proper shutdown here.
+        // Game systems
+        _gameMan.Dispose(disposing);
     }
 
     public override void Update(ModUpdateLevel level, FrameEventArgs frameEventArgs)
     {
         base.Update(level, frameEventArgs);
-        // DEVNOTE: Game update loop goes here. Usually you'll want some independent GameTicker.
+        // Game systems
+        _gameMan.Update(level, frameEventArgs);
     }
 }

@@ -2,6 +2,9 @@
 using JetBrains.Annotations;
 using Robust.Server.Console;
 using Robust.Server.Player;
+using Robust.Shared.Players;
+using Robust.Shared.Toolshed;
+using Robust.Shared.Toolshed.Errors;
 
 namespace Content.Server;
 
@@ -46,5 +49,10 @@ public sealed class LocalHostConGroup : IConGroupControllerImplementation, IPost
 
     void IPostInjectInit.PostInject() {
         IoCManager.Resolve<IConGroupController>().Implementation = this;
+    }
+
+    public bool CheckInvokable(CommandSpec command, ICommonSession user, out IConError error)
+    {
+        throw new NotImplementedException();
     }
 }

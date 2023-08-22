@@ -1,15 +1,8 @@
 <screens1:MainScreen
     xmlns="https://spacestation14.io"
-    xmlns:screens="clr-namespace:Robust.Client.UserInterface.Screens"
-    xmlns:client="clr-namespace:Content.Client"
+    xmlns:viewport="clr-namespace:Content.Client.Graphics.Viewport"
     xmlns:screens1="clr-namespace:Content.Client.UserInterfaces.Screens">
-    <BoxContainer Name="ConnectionBox" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <BoxContainer Orientation="Vertical" VerticalExpand="True" HorizontalExpand="True" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Label Text="Don't Forget"></Label>
-            <Control MinHeight="5"></Control>
-            <Button Text="Start"></Button>
-            <Control MinHeight="5"></Control>
-            <Button Text="End"></Button>
-        </BoxContainer>
-    </BoxContainer>
+    <LayoutContainer Name="ViewportContainer" HorizontalExpand="True" VerticalExpand="True">
+        <viewport:MainViewport Name="MainViewport"/>
+    </LayoutContainer>
 </screens1:MainScreen>

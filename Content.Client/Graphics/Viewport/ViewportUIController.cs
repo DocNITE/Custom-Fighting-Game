@@ -16,7 +16,7 @@ public sealed class ViewportUiController : UIController
 
     public override void Initialize()
     {
-        var gameplayStateLoad = UIManager.GetUIController<GameplayStateLoadController>();
+        var gameplayStateLoad = UIManager.GetUIController<StateLoadController>();
         gameplayStateLoad.OnScreenLoad += OnScreenLoad;
 
         IoCManager.InjectDependencies(this);
