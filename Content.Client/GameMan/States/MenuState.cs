@@ -34,6 +34,11 @@ public class MenuState : GameState
         // TODO: MusicSystem support, and make some title menu with Play, About, Exit
         // For fighting - we should use other fight states, and specifig 'FightingComponent' in entity, for DO their logic in game
         Viewport = new GtkMenuScreen();
+
+        var win = new GtkWindow();
+        win.Size = new Vector2(780, 580);
+        win.Position = new Vector2(10, 10);
+        Viewport.AddChild(win);
         
         // TODO: Our content
         
@@ -54,6 +59,7 @@ public class GtkMenuScreen : GtkWidget
 {
     public override void Draw(GtkDrawingHandle handle)
     {
+        handle.DrawRectangle(0, 0, 800, 600, Color.Aqua, true);
         base.Draw(handle);
     }
 }

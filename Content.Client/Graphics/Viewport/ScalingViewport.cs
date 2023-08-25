@@ -177,7 +177,7 @@ public sealed class ScalingViewport : Control, IViewportControl, IMesaDrawing
         var textureLocalPosition = new Vector2((float)drawBox.TopLeft.X, (float)drawBox.TopLeft.Y) + 
                                    texturePosition * new Vector2(
                                        (float)drawBox.Size.X / (float)_physicalSize.X, 
-                                       (float)drawBox.Size.X / (float)_physicalSize.X);
+                                       (float)drawBox.Size.Y / (float)_physicalSize.Y);
 
         // draw texture
         handle.DrawTextureRectRegion(texture.Texture,
