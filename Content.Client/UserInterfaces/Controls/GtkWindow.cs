@@ -1,7 +1,5 @@
 using System.Numerics;
 using Content.Client.Graphics;
-using Content.Client.Graphics.Viewport;
-using Robust.Client.Graphics;
 
 namespace Content.Client.UserInterfaces.Controls;
 

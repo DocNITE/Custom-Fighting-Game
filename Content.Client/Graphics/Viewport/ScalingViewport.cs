@@ -197,12 +197,12 @@ public sealed class ScalingViewport : Control, IViewportControl, IMesaDrawing
         var position = rect.TopLeft;
         
         var localSize = new Vector2(
-            drawBox.Width/( _physicalSize.X / ((size.X*_curRenderScale)*size.X) ), 
-            drawBox.Height/( _physicalSize.Y / ((size.Y*_curRenderScale)*size.Y) ));
+            drawBox.Width/( _physicalSize.X / ((size.X*_curRenderScale)) ), 
+            drawBox.Height/( _physicalSize.Y / ((size.Y*_curRenderScale)) ));
         var localPosition = new Vector2((float)drawBox.TopLeft.X, (float)drawBox.TopLeft.Y) + 
                             position * new Vector2(
                                        (float)drawBox.Size.X / (float)_physicalSize.X, 
-                                       (float)drawBox.Size.X / (float)_physicalSize.X);
+                                       (float)drawBox.Size.Y / (float)_physicalSize.Y);
         
         handle.DrawRect(
             new UIBox2(

@@ -59,7 +59,6 @@ public class GtkMenuScreen : GtkWidget
 {
     public override void Draw(GtkDrawingHandle handle)
     {
-        handle.DrawRectangle(0, 0, 800, 600, Color.Aqua, true);
         base.Draw(handle);
     }
 }
