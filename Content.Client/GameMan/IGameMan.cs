@@ -5,7 +5,7 @@ namespace Content.Client.GameMan;
 
 public interface IGameMan
 {
-    IGameState TargetState { get; }
+    IGameState? TargetState { get; }
     void Initialize();
     void Update(ModUpdateLevel level, FrameEventArgs frameEventArgs);
     void Dispose(bool disposing);

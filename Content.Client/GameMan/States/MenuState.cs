@@ -2,9 +2,27 @@ using System.Numerics;
 using Content.Client.UserInterfaces;
 using Content.Client.UserInterfaces.Controls;
 using Robust.Client.Animations;
+using Robust.Client.GameObjects;
 using Robust.Client.Input;
 using Robust.Shared.Animations;
-using YamlDotNet.Core.Tokens;
+
+/*
+public SoundSpecifier TryOpenDoorSound = new SoundPathSpecifier("/Audio/Effects/bang.ogg");
+   public SoundSpecifier SparkSound = new SoundCollectionSpecifier("sparks");
+   PlaySound(uid, door.SparkSound, AudioParams.Default.WithVolume(8), args.UserUid, false);
+   SharedAudioSystem Audio
+   protected override void PlaySound(EntityUid uid, SoundSpecifier soundSpecifier, AudioParams audioParams, EntityUid? predictingPlayer, bool predicted)
+   {
+   // If this sound would have been predicted by all clients, do not play any audio.
+   if (predicted && predictingPlayer == null)
+   return;
+   
+   if (predicted)
+   Audio.PlayPredicted(soundSpecifier, uid, predictingPlayer, audioParams);
+   else
+   Audio.PlayPvs(soundSpecifier, uid, audioParams);
+   }
+*/
 
 namespace Content.Client.GameMan.States;
 
@@ -12,49 +30,12 @@ public class MenuState : GameState
 {
     public override void Initialize()
     {
+        //IoCManager.Resolve<AudioSystem>().Play()
+        // TODO: MusicSystem support, and make some title menu with Play, About, Exit
+        // For fighting - we should use other fight states, and specifig 'FightingComponent' in entity, for DO their logic in game
         Viewport = new GtkMenuScreen();
-        var widget = Viewport;
         
-        var text = new GtkLabel();
-        text.Content = "  Ahah some cool text! Yeah, i know it...\n\n   Realy looks cool lol :3";
-        text.Position = new Vector2(0, 0);
-        text.Size = new Vector2(350, 200);
-        text.FontScale = 2;
-        widget.AddChild(text);
-        
-        var text2 = new GtkLabel();
-        text2.Content = "  Da fak?";
-        text2.Position = new Vector2(10, 0);
-        text2.Size = new Vector2(350, 200);
-        text2.FontScale = 2;
-        widget.AddChild(text2);
-        
-        float _moveAniTime = 30f;
-        
-        var anim = new Animation
-        {
-            Length = TimeSpan.FromMilliseconds(_moveAniTime * 1000),
-            AnimationTracks =
-            {
-                new AnimationTrackControlProperty
-                {
-                    Property = nameof(GtkLabel.Position),
-                    InterpolationMode = AnimationInterpolationMode.Linear,
-                    KeyFrames =
-                    {
-                        new AnimationTrackProperty.KeyFrame(new Vector2(0,0), 0f),
-                        new AnimationTrackProperty.KeyFrame(new Vector2(300, 300), _moveAniTime)
-                    }
-                }
-            }
-        };
-        text.PlayAnimation(anim, "lol");
-
-        var texture = new GtkTexture();
-        texture.Size = new Vector2(100, 100);
-        texture.TexturePath = "/Textures/Arts/chel.png";
-        widget.AddChild(texture);
-        texture.ZIndex = -4;
+        // TODO: Our content
         
         base.Initialize();
     }
@@ -62,12 +43,9 @@ public class MenuState : GameState
     public override void OnInput(KeyEventArgs keyEvent, KeyEventType type)
     {
         base.OnInput(keyEvent, type);
-        Logger.Debug($"{keyEvent.Key.ToString()}({type.ToString()})");
+
         if (keyEvent.Key == Keyboard.Key.W)
         {
-            Logger.Debug("Works");
-            Viewport.Children[0].Position =
-                new Vector2(Viewport.Children[0].Position.X, Viewport.Children[0].Position.Y + 1);
         } 
     }
 }
