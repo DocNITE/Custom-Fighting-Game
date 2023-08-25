@@ -35,8 +35,9 @@ public partial class GameplayScreen : UIScreen
         SetAnchorPreset(MainViewport, LayoutPreset.Wide);
         SetAnchorPreset(ViewportContainer, LayoutPreset.Wide);
 
-        /*
-         * // TODO: DEBUG
+        
+          // TODO: DEBUG
+          /*
         var widget = new GtkWidget();
         IoCManager.Resolve<IGtkUserInterfaceManager>().RootScreen.AddChild(widget);
         widget.Position = new Vector2(0, 0);
@@ -49,7 +50,7 @@ public partial class GameplayScreen : UIScreen
         widget.AddChild(text);
         
         var text2 = new GtkLabel();
-        text2.Content = "  Da fak?";
+        text2.Content = "Dafak?";
         text2.Position = new Vector2(10, 0);
         text2.Size = new Vector2(350, 200);
         text2.FontScale = 2;

@@ -15,11 +15,22 @@ public partial class GtkLabel : GtkWidget
     private readonly char _wrapIdentifier = ' ';
     private readonly float _xPadding = 1.0f;
     private readonly float _yPadding = 10.0f; // need rework
-    
-    public string Content = "";
-    public string FontId = "kitchen-sink";
-    public int FontScale = 1;
 
+    private string _content = "";
+
+    public string Content
+    {
+        get => _content;
+        set
+        {
+            _content = value + " ";
+        }
+    }
+
+    public string FontId { get; set; } = "kitchen-sink";
+    public float FontScale { get; set; } = 1.0f;
+
+    public Color Color { get; set; } = Robust.Shared.Maths.Color.White;
     public FontStyle FontStyle = FontStyle.Box;
 
     public override void Draw(GtkDrawingHandle handle)
@@ -29,7 +40,7 @@ public partial class GtkLabel : GtkWidget
         var data = new DrawingTextData(Content, FontId, FontStyle, _xPadding, handle.CurrentRenderScale);
 
         var contentList = new List<TextLine>();
-        var contentSplit = Content.Split(_wrapIdentifier);
+        var contentSplit = _content.Split(_wrapIdentifier);
 
         var currentContent = "";
         foreach (var str in contentSplit)
@@ -83,7 +94,7 @@ public partial class GtkLabel : GtkWidget
 
             tex.Scale = new Vector2(FontScale, FontScale);
             tex.Position = new Vector2(xPos * FontScale, yPos * FontScale);
-            DrawTexture(handle, tex);
+            DrawTexture(handle, tex, Color);
             xPos += (tex.Size.X + _xPadding) * handle.CurrentRenderScale;
         }
 

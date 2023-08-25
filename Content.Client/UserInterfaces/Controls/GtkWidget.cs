@@ -136,6 +136,7 @@ public partial class GtkWidget : IDisposable
         child.Parent = this;
         _orderedChildren.Add(child);
         // FIXME: We might be use there OrderChilds()
+        InvalidateWidget();
     }
 
     public void RemoveChild(GtkWidget child)
@@ -143,9 +144,10 @@ public partial class GtkWidget : IDisposable
         _orderedChildren.Remove(child);
         child.Parent = null;
         // FIXME: We might be use there OrderChilds()
+        InvalidateWidget();
     }
 
-    private void InvalidateWidget()
+    public virtual void InvalidateWidget()
     {
         _physicalPosition = (Parent?.PhysicalPosition + Position ?? Position) * UserInterfaceManager.CurrentRenderScale;
     }

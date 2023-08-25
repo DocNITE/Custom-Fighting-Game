@@ -12,9 +12,10 @@ public partial class GtkWindow : GtkWidget
     
     public override void Draw(GtkDrawingHandle handle)
     {
-        base.Draw(handle);
         // Draw sliced window image
         DrawSliceImage(handle);
+        
+        base.Draw(handle);
     }
 
     #region Drawing methods

@@ -35,12 +35,14 @@ public class MenuState : GameState
         // For fighting - we should use other fight states, and specifig 'FightingComponent' in entity, for DO their logic in game
         Viewport = new GtkMenuScreen();
 
-        var win = new GtkWindow();
-        win.Size = new Vector2(780, 580);
+        var win = new GtkInputList();
+        win.Size = new Vector2(158, 300);
         win.Position = new Vector2(10, 10);
+        win.AddButton("Play", "ev_play");
         Viewport.AddChild(win);
         
-        // TODO: Our content
+        // TODO: MOSTLY IMPORTANT!!!
+        // Need доделать GtkInputList. Нужно реализовать перемещение курсора и выбор кнопки.
         
         base.Initialize();
     }
