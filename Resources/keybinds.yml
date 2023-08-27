@@ -36,6 +36,18 @@ binds: # These are all the current engine keybinds.
   - function: MoveDown
     type: State
     key: S
+  - function: MoveUp # secondary bindigs
+    type: State
+    key: Up
+  - function: MoveLeft
+    type: State
+    key: Left
+  - function: MoveRight
+    type: State
+    key: Right
+  - function: MoveDown # secondary bindigs end
+    type: State
+    key: Down
   - function: Walk
     type: State
     key: Shift

@@ -5,6 +5,7 @@ using Robust.Client.Animations;
 using Robust.Client.GameObjects;
 using Robust.Client.Input;
 using Robust.Shared.Animations;
+using Robust.Shared.Input;
 
 /*
 public SoundSpecifier TryOpenDoorSound = new SoundPathSpecifier("/Audio/Effects/bang.ogg");
@@ -34,12 +35,20 @@ public class MenuState : GameState
         // TODO: MusicSystem support, and make some title menu with Play, About, Exit
         // For fighting - we should use other fight states, and specifig 'FightingComponent' in entity, for DO their logic in game
         Viewport = new GtkMenuScreen();
+        
+        // add background content
+        var someShit = new GtkTexture();
+        someShit.TexturePath = "/Textures/Interface/main-screen-gradient.png";
+        someShit.Position = new Vector2(400 - 256, 300 - 128);
+        someShit.Color = new Color(255, 0, 0, 190);
+        Viewport.AddChild(someShit);
 
         var win = new GtkInputList();
         win.Size = new Vector2(158, 300);
         win.Position = new Vector2(10, 10);
         win.AddButton("Play", "ev_play");
         Viewport.AddChild(win);
+        //win.Focus();
         
         // TODO: MOSTLY IMPORTANT!!!
         // Need доделать GtkInputList. Нужно реализовать перемещение курсора и выбор кнопки.
@@ -47,21 +56,22 @@ public class MenuState : GameState
         base.Initialize();
     }
 
-    public override void OnInput(KeyEventArgs keyEvent, KeyEventType type)
+    public override bool OnInput(BoundKeyEventArgs arg)
     {
-        base.OnInput(keyEvent, type);
+        base.OnInput(arg);
+        
+        if (arg.Function == EngineKeyFunctions.MoveUp)
+            Logger.Debug("Pressed");
 
-        if (keyEvent.Key == Keyboard.Key.W)
-        {
-        } 
+        return true;
     }
 }
 
 public class GtkMenuScreen : GtkWidget
 {
-    public override void Draw(GtkDrawingHandle handle)
+    public override void OnDraw(GtkDrawingHandle handle)
     {
-        base.Draw(handle);
+        base.OnDraw(handle);
     }
 }
 

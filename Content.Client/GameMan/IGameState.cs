@@ -1,5 +1,6 @@
 using Content.Client.UserInterfaces.Controls;
 using Robust.Client.Input;
+using Robust.Shared.Input;
 
 namespace Content.Client.GameMan;
 
@@ -7,7 +8,7 @@ public interface IGameState
 {
     GtkWidget Viewport { get; }
 
-    void Initialize() {}
+    void Initialize();
 
-    void OnInput(KeyEventArgs keyEvent, KeyEventType type) {}
+    bool OnInput(BoundKeyEventArgs arg);
 }

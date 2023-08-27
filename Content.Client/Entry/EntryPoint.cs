@@ -1,4 +1,5 @@
 using Content.Client.GameMan;
+using Content.Client.Input;
 using Content.Client.IoC;
 using Content.Client.Novel.Manager;
 using Content.Client.States;
@@ -6,6 +7,7 @@ using Content.Client.UserInterfaces;
 using JetBrains.Annotations;
 using Robust.Client;
 using Robust.Client.Graphics;
+using Robust.Client.Input;
 using Robust.Client.State;
 using Robust.Client.UserInterface;
 using Robust.Shared.ContentPack;
@@ -19,6 +21,8 @@ namespace Content.Client.Entry;
 public sealed class EntryPoint : GameClient
 {
     [Dependency] private readonly IUserInterfaceManager _userInterfaceManager = default!;
+    [Dependency] private readonly IInputManager _inputManager = default!;
+    
     [Dependency] private readonly IGtkUserInterfaceManager _gtkUserInterfaceManager = default!;
     [Dependency] private readonly IVnSceneManager _vnSceneManager = default!;
     [Dependency] private readonly IGameMan _gameMan = default!;
@@ -44,6 +48,9 @@ public sealed class EntryPoint : GameClient
 
         IoCManager.BuildGraph();
         IoCManager.InjectDependencies(this);
+        
+        // Initialize bindigs
+        ContentContexts.SetupContexts(_inputManager.Contexts);
         
         // Initialize IoC
         _gtkUserInterfaceManager.Initialize();

@@ -33,9 +33,9 @@ public partial class GtkLabel : GtkWidget
     public Color Color { get; set; } = Robust.Shared.Maths.Color.White;
     public FontStyle FontStyle = FontStyle.Box;
 
-    public override void Draw(GtkDrawingHandle handle)
+    public override void OnDraw(GtkDrawingHandle handle)
     {
-        base.Draw(handle);
+        base.OnDraw(handle);
 
         var data = new DrawingTextData(Content, FontId, FontStyle, _xPadding, handle.CurrentRenderScale);
 

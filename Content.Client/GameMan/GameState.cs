@@ -1,6 +1,6 @@
 using Content.Client.UserInterfaces;
 using Content.Client.UserInterfaces.Controls;
-using Robust.Client.Input;
+using Robust.Shared.Input;
 
 namespace Content.Client.GameMan;
 
@@ -13,7 +13,8 @@ public class GameState : IGameState
         IoCManager.Resolve<IGtkUserInterfaceManager>().RootScreen.AddChild(Viewport);
     }
     
-    public virtual void OnInput(KeyEventArgs keyEvent, KeyEventType type)
+    public virtual bool OnInput(BoundKeyEventArgs arg)
     {
+        return true;
     }
 }

@@ -31,12 +31,12 @@ public class GameMan : IGameMan
     {
         if (TargetState != null)
         {
-            _inputManager.FirstChanceOnKeyEvent -= TargetState.OnInput;
+            _inputManager.UIKeyBindStateChanged -= TargetState.OnInput;
         }
         
         TargetState = state;
         TargetState.Initialize();
-        _inputManager.FirstChanceOnKeyEvent += TargetState.OnInput;
+        _inputManager.UIKeyBindStateChanged += TargetState.OnInput;
         
         // TODO: Send StateChangeEvent for systems
     }

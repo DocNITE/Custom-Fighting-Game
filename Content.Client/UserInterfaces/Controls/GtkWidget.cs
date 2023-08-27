@@ -7,6 +7,7 @@ using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Shared.Animations;
+using Robust.Shared.Input;
 using Robust.Shared.Timing;
 
 namespace Content.Client.UserInterfaces.Controls;
@@ -89,7 +90,12 @@ public partial class GtkWidget : IDisposable
         Children = _orderedChildren;
     }
 
-    public virtual void Draw(GtkDrawingHandle handle)
+    public void Focus()
+    {
+        UserInterfaceManager.Focused = this;
+    }
+
+    public virtual void OnDraw(GtkDrawingHandle handle)
     {
         if (!Visible)
             return;
@@ -100,6 +106,22 @@ public partial class GtkWidget : IDisposable
     public virtual void FrameUpdate(FrameEventArgs args)
     {
         ProcessAnimations(args);
+    }
+
+    public virtual void ControlFocusExited()
+    {
+    }
+
+    public virtual void OnKeyBindDown(BoundKeyEventArgs args)
+    {
+    }
+
+    public virtual void OnKeyBindUp(BoundKeyEventArgs args)
+    {
+    }
+
+    public virtual void OnKeyBind(BoundKeyEventArgs args)
+    {
     }
     
     internal int DoFrameUpdateRecursive(FrameEventArgs args)
@@ -120,7 +142,7 @@ public partial class GtkWidget : IDisposable
         for (var i = 0; i < ChildCount; i++)
         {
             var widget = Children[i];
-            widget.Draw(handle);
+            widget.OnDraw(handle);
         }
     }
 

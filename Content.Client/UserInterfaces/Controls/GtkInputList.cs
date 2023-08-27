@@ -1,5 +1,6 @@
 using System.Numerics;
 using Robust.Client.Input;
+using Robust.Shared.Input;
 
 namespace Content.Client.UserInterfaces.Controls;
 
@@ -50,5 +51,11 @@ public sealed class GtkInputList : GtkWindow
         newButton.FontScale = 1.5f;
         AddChild(newButton);
         Update();
+    }
+
+    public override void OnKeyBindDown(BoundKeyEventArgs args)
+    {
+        base.OnKeyBindDown(args);
+        Logger.Debug(args.Function.FunctionName);
     }
 }
