@@ -47,6 +47,8 @@ public class MenuState : GameState
         win.Size = new Vector2(158, 300);
         win.Position = new Vector2(10, 10);
         win.AddButton("Play", "ev_play");
+        win.AddButton("About", "ev_about");
+        win.AddButton("Exit", "ev_exit");
         Viewport.AddChild(win);
         //win.Focus();
         
