@@ -14,22 +14,12 @@ public sealed class GtkInputList : GtkWindow
 
     public void Update()
     {
-       
-    }
-
-    public void OnInput(KeyEventArgs keyEvent, KeyEventType type)
-    {
-        // TODO: Might be rework for InputManager or something
-        if ((keyEvent.Key == Keyboard.Key.W || keyEvent.Key == Keyboard.Key.Up) && type == KeyEventType.Down)
+        // TODO: Make focus support
+        var yPos = 0.0f;
+        foreach (var child in Children)
         {
-            var newVal = _focused++;
-            //_focused = newVal >= List.Count ? 0 : newVal;
-            Update();
-        } else if ((keyEvent.Key == Keyboard.Key.S || keyEvent.Key == Keyboard.Key.Down) && type == KeyEventType.Down)
-        {
-            var newVal = _focused--;
-            //_focused = newVal < 0 ? List.Count-1 : newVal;
-            Update();
+            child.Position = new Vector2(_padding, yPos + _padding);
+            yPos += _heightItemSize + _padding;
         }
     }
 
