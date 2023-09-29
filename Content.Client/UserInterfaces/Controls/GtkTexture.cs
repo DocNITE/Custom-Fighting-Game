@@ -9,14 +9,17 @@ public sealed class GtkTexture : GtkWidget
 
     public Color Color { get; set; } = Color.White;
     
-    public override void OnDraw(GtkDrawingHandle handle)
+    public override bool OnDraw(GtkDrawingHandle handle)
     {
-        base.OnDraw(handle);
+        if (!base.OnDraw(handle))
+            return false;
 
         if (TexturePath is null)
-            return;
+            return false;
         
         var tex = new GraphicsTexture(TexturePath);
         DrawTexture(handle,tex,Color);
+
+        return true;
     }
 }

@@ -43,14 +43,20 @@ public class MenuState : GameState
         someShit.Color = new Color(255, 0, 0, 190);
         Viewport.AddChild(someShit);
 
+        var txt = new GtkLabel();
+        txt.Content = "Play\nNon play\nSomeFunny txt";
+        txt.Size = new Vector2(158, 300);
+        txt.Position = new Vector2(10, 10);
+        Viewport.AddChild(txt);
         var win = new GtkInputList();
-        win.Size = new Vector2(158, 300);
-        win.Position = new Vector2(10, 10);
-        win.AddButton("Play", "ev_play");
-        win.AddButton("About", "ev_about");
-        win.AddButton("Exit", "ev_exit");
-        Viewport.AddChild(win);
-        //win.Focus();
+           win.Size = new Vector2(158, 300);
+           win.Position = new Vector2(10, 10);
+           win.AddButton("Play", "ev_play");
+           win.AddButton("About", "ev_about");
+           win.AddButton("Exit", "ev_exit");
+           Viewport.AddChild(win);
+         
+        win.Focus();
         
         // TODO: MOSTLY IMPORTANT!!!
         // Need доделать GtkInputList. Нужно реализовать перемещение курсора и выбор кнопки.
@@ -62,8 +68,10 @@ public class MenuState : GameState
     {
         base.OnInput(arg);
         
-        if (arg.Function == EngineKeyFunctions.MoveUp)
-            Logger.Debug("Pressed");
+        /*
+         *  if (arg.Function == EngineKeyFunctions.MoveUp)
+           Logger.Debug("Pressed");
+         */
 
         return true;
     }
@@ -71,9 +79,9 @@ public class MenuState : GameState
 
 public class GtkMenuScreen : GtkWidget
 {
-    public override void OnDraw(GtkDrawingHandle handle)
+    public override bool OnDraw(GtkDrawingHandle handle)
     {
-        base.OnDraw(handle);
+        return base.OnDraw(handle);
     }
 }
 

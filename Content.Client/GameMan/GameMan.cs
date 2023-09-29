@@ -8,7 +8,6 @@ namespace Content.Client.GameMan;
 public class GameMan : IGameMan
 {
     [Dependency] private readonly IInputManager _inputManager = default!;
-    [Dependency] private readonly IEntityManager _entityManager = default!;
     
     public IGameState? TargetState { get; private set; }
     
@@ -33,7 +32,8 @@ public class GameMan : IGameMan
         {
             _inputManager.UIKeyBindStateChanged -= TargetState.OnInput;
         }
-        
+
+        TargetState?.Dispose();
         TargetState = state;
         TargetState.Initialize();
         _inputManager.UIKeyBindStateChanged += TargetState.OnInput;

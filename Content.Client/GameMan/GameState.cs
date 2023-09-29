@@ -6,7 +6,7 @@ namespace Content.Client.GameMan;
 
 public class GameState : IGameState
 {
-    public GtkWidget Viewport { get; set; } = default!;
+    public GtkWidget Viewport { get; set; } = new GtkWidget();
 
     public virtual void Initialize()
     {
@@ -16,5 +16,9 @@ public class GameState : IGameState
     public virtual bool OnInput(BoundKeyEventArgs arg)
     {
         return true;
+    }
+
+    public virtual void Dispose()
+    {
     }
 }

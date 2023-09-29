@@ -9,6 +9,7 @@ namespace Content.Client.UserInterfaces.Controls;
 
 // TODO Add shader support for fonts
 // TODO Add normal Y Padding with font height
+// TODO PRIORITY Make FontTexture is static data for GtkLabel. We should update it only when set a new text
 [Virtual]
 public partial class GtkLabel : GtkWidget
 {
@@ -33,9 +34,10 @@ public partial class GtkLabel : GtkWidget
     public Color Color { get; set; } = Robust.Shared.Maths.Color.White;
     public FontStyle FontStyle = FontStyle.Box;
 
-    public override void OnDraw(GtkDrawingHandle handle)
+    public override bool OnDraw(GtkDrawingHandle handle)
     {
-        base.OnDraw(handle);
+        if (!base.OnDraw(handle))
+            return false;
 
         var data = new DrawingTextData(Content, FontId, FontStyle, _xPadding, handle.CurrentRenderScale);
 
@@ -78,6 +80,8 @@ public partial class GtkLabel : GtkWidget
                 yPos = newPos.Y;
             }
         }
+
+        return true;
     }
 
     public Vector2 DrawText(GtkDrawingHandle handle, DrawingTextData data, TextLine line, float xPos, float yPos)

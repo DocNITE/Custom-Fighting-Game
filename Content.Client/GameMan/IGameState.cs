@@ -9,6 +9,6 @@ public interface IGameState
     GtkWidget Viewport { get; }
 
     void Initialize();
-
     bool OnInput(BoundKeyEventArgs arg);
+    void Dispose();
 }

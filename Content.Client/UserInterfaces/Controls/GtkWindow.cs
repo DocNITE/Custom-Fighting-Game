@@ -10,12 +10,15 @@ public partial class GtkWindow : GtkWidget
 
     public string TexturePath { get; set; } = "/Textures/Interface/win-gui.png";
     
-    public override void OnDraw(GtkDrawingHandle handle)
+    public override bool OnDraw(GtkDrawingHandle handle)
     {
+        if (!Visible)
+            return false;
+        
         // Draw sliced window image
         DrawSliceImage(handle);
         
-        base.OnDraw(handle);
+        return base.OnDraw(handle);
     }
 
     #region Drawing methods

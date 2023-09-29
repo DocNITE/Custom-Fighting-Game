@@ -6,7 +6,6 @@ namespace Content.Client.Novel;
 public sealed class VnSceneData : IPrototype
 {
     [IdDataField] public string ID { get; } = default!;
-    
-    [DataField("nextId")] public string? NextID { get; }
-    [DataField("content")] public List<VnDialogData> Content { get; } = new();
+    [DataField("characters")] public List<string> Characters { get; } = new();
+    [DataField("content")] public List<VnContentData> Content { get; } = new();
 }

@@ -95,12 +95,14 @@ public partial class GtkWidget : IDisposable
         UserInterfaceManager.Focused = this;
     }
 
-    public virtual void OnDraw(GtkDrawingHandle handle)
+    public virtual bool OnDraw(GtkDrawingHandle handle)
     {
         if (!Visible)
-            return;
+            return false;
         
         DrawChilds(handle);
+
+        return true;
     }
 
     public virtual void FrameUpdate(FrameEventArgs args)
