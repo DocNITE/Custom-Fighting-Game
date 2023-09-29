@@ -8,7 +8,7 @@ public sealed class NovelState : GameState
     public override void Initialize()
     {
         Viewport = new GtkNovelScreen();
-        
+
         base.Initialize();
     }
 }
@@ -23,7 +23,7 @@ public class GtkNovelScreen : GtkWidget
         AddChild(TextWindow);
         AddChild(TextLabel);
     }
-    
+
     public override bool OnDraw(GtkDrawingHandle handle)
     {
         return base.OnDraw(handle);

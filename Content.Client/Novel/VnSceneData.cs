@@ -3,7 +3,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Client.Novel;
 
 [Prototype("vnScene")]
-public sealed class VnSceneData : IPrototype
+public sealed partial class VnSceneData : IPrototype
 {
     [IdDataField] public string ID { get; } = default!;
     [DataField("characters")] public List<string> Characters { get; } = new();
