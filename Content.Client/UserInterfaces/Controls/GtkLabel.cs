@@ -14,17 +14,29 @@ namespace Content.Client.UserInterfaces.Controls;
 public partial class GtkLabel : GtkWidget
 {
     private readonly char _wrapIdentifier = ' ';
-    private readonly float _xPadding = 1.0f;
-    private readonly float _yPadding = 10.0f; // need rework
+    private float _xPadding = 1.0f;
+    private float _yPadding = 10.0f; // need rework
 
     private string _content = "";
+
+    public float XPadding
+    {
+        get => _xPadding;
+        set => _xPadding = value;
+    }
+
+    public float YPadding
+    {
+        get => _yPadding;
+        set => _yPadding = value;
+    }
 
     public string Content
     {
         get => _content;
         set
         {
-            _content = value + " ";
+            _content = value;
         }
     }
 
@@ -47,19 +59,19 @@ public partial class GtkLabel : GtkWidget
         var currentContent = "";
         foreach (var str in contentSplit)
         {
-            currentContent += str;
+            currentContent += str + _wrapIdentifier;
 
-            if ((data.GetSize(currentContent) * FontScale) <= Size.X)
+            if ((data.GetSize(currentContent) * FontScale) <= Size.X && !data.GetLineBreaker(str + _wrapIdentifier))
             {
-                contentList.Add(new TextLine(str, false));
+                contentList.Add(new TextLine(str + _wrapIdentifier, false));
             }
             else
             {
-                contentList.Add(new TextLine(str, true));
+                contentList.Add(new TextLine(str + _wrapIdentifier, true));
                 currentContent = str;
             }
         }
-        
+
         // Finaly... Drawingum
         var xPos = 0.0f;
         var yPos = 0.0f;
@@ -86,13 +98,13 @@ public partial class GtkLabel : GtkWidget
 
     public Vector2 DrawText(GtkDrawingHandle handle, DrawingTextData data, TextLine line, float xPos, float yPos)
     {
-        var textures = data.GetTextures(line.Content + " ");
+        var textures = data.GetTextures(line.Content);
         foreach (var tex in textures)
         {
             if (tex == null)
             {
-                yPos += _yPadding * handle.CurrentRenderScale;
-                xPos = 0.0f;
+                //yPos += _yPadding * handle.CurrentRenderScale;
+                //xPos = 0.0f;
                 continue;
             }
 
@@ -116,7 +128,7 @@ public partial class GtkLabel : GtkWidget
             Content = content;
         }
     }
-    
+
     public sealed class DrawingTextData
     {
         private float CharPadding { get; }
@@ -140,13 +152,13 @@ public partial class GtkLabel : GtkWidget
 
         public bool GetLineBreaker(string content) =>
             content.Any(item => item == '\n');
-        
+
 
         public float GetSize(string content) =>
             content.Where(item => item != '\n').Sum(item => (Content[item].Size.X + CharPadding) * RenderScale);
 
 
-        public List<FontTexture?> GetTextures(string content) => 
+        public List<FontTexture?> GetTextures(string content) =>
             content.Select(item => item != '\n' ? Content[item] : null).ToList();
 
     }

@@ -1,6 +1,6 @@
 namespace Content.Client.Novel.Actions;
 
-public sealed class VnActionDefault : IVnAction
+public sealed partial class VnActionDefault : IVnAction
 {
     public void Act()
     {

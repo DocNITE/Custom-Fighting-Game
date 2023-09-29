@@ -16,7 +16,8 @@ public class GameMan : IGameMan
     {
         IoCManager.InjectDependencies(this);
         // NOTE: For default we initialize MenuState
-        SetState(new MenuState());
+        //SetState(new MenuState());
+        SetState(new NovelState());
     }
 
     public void Update(ModUpdateLevel level, FrameEventArgs frameEventArgs)
