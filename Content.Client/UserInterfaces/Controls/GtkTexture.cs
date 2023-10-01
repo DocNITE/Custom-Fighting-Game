@@ -7,15 +7,21 @@ public sealed class GtkTexture : GtkWidget
 {
     public string? TexturePath { get; set; }
 
-    public override void Draw(GtkDrawingHandle handle)
-    {
-        base.Draw(handle);
+    public Color Color { get; set; } = Color.White;
 
+    public UIBox2? Rect { get; set; }
+
+    public override bool OnDraw(GtkDrawingHandle handle)
+    {
         if (TexturePath is null)
-            return;
-        
+            return false;
+
         var tex = new GraphicsTexture(TexturePath);
-        tex.Scale = new Vector2(2, 2);
-        DrawTexture(handle,tex);
+        tex.Size = Size;
+        if (Rect is not null)
+            tex.Rect = (UIBox2)Rect;
+        DrawTexture(handle, tex, Color);
+
+        return base.OnDraw(handle);
     }
 }

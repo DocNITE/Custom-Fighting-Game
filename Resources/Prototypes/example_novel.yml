@@ -1,15 +1,11 @@
 - type: vnScene
-  id: test_1
-  nextId: test_1 # or null
-  content:
-  - id: start
-    nextId: dia_2
-    text: Hey how a you date?
-    background: /Textures/Fonts/kitchen-sink.png
-    scale: 1 # int
-    fade: 1.0 # 0.0 - 1.0
-  - id: dia_2
-    text: I think you ok...
-    background: /Textures/Fonts/kitchen-sink.png
-    scale: 1
-    fade: 0.0
+  id: default
+  content: 
+    - text: I can't sleep...
+      delay: 130
+    - text: I want to sleep....
+    - text: It's cold....
+    - text: And.. I see some place... 
+    - text: Shity place...
+      
+      

@@ -1,7 +1,7 @@
 namespace Content.Client.Novel.Actions;
 
 [ImplicitDataDefinitionForInheritors]
-public interface IVnAction
+public partial interface IVnAction
 {
     void Act();
 }

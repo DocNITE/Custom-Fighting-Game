@@ -7,6 +7,7 @@ using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Shared.Animations;
+using Robust.Shared.Input;
 using Robust.Shared.Timing;
 
 namespace Content.Client.UserInterfaces.Controls;
@@ -89,17 +90,40 @@ public partial class GtkWidget : IDisposable
         Children = _orderedChildren;
     }
 
-    public virtual void Draw(GtkDrawingHandle handle)
+    public void Focus()
+    {
+        UserInterfaceManager.Focused = this;
+    }
+
+    public virtual bool OnDraw(GtkDrawingHandle handle)
     {
         if (!Visible)
-            return;
+            return false;
         
         DrawChilds(handle);
+
+        return true;
     }
 
     public virtual void FrameUpdate(FrameEventArgs args)
     {
         ProcessAnimations(args);
+    }
+
+    public virtual void ControlFocusExited()
+    {
+    }
+
+    public virtual void OnKeyBindDown(BoundKeyEventArgs args)
+    {
+    }
+
+    public virtual void OnKeyBindUp(BoundKeyEventArgs args)
+    {
+    }
+
+    public virtual void OnKeyBind(BoundKeyEventArgs args)
+    {
     }
     
     internal int DoFrameUpdateRecursive(FrameEventArgs args)
@@ -120,7 +144,7 @@ public partial class GtkWidget : IDisposable
         for (var i = 0; i < ChildCount; i++)
         {
             var widget = Children[i];
-            widget.Draw(handle);
+            widget.OnDraw(handle);
         }
     }
 
@@ -136,6 +160,7 @@ public partial class GtkWidget : IDisposable
         child.Parent = this;
         _orderedChildren.Add(child);
         // FIXME: We might be use there OrderChilds()
+        InvalidateWidget();
     }
 
     public void RemoveChild(GtkWidget child)
@@ -143,9 +168,10 @@ public partial class GtkWidget : IDisposable
         _orderedChildren.Remove(child);
         child.Parent = null;
         // FIXME: We might be use there OrderChilds()
+        InvalidateWidget();
     }
 
-    private void InvalidateWidget()
+    public virtual void InvalidateWidget()
     {
         _physicalPosition = (Parent?.PhysicalPosition + Position ?? Position) * UserInterfaceManager.CurrentRenderScale;
     }

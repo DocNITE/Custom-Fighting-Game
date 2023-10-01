@@ -7,13 +7,5 @@ namespace Content.Client.UserInterfaces;
 
 public partial interface IGtkUserInterfaceManager
 {
-    int CurrentRenderScale { get; set; }
-    
-    GtkWidget RootScreen { get; }
-
-    void Initialize();
-
-    void Draw(DrawingHandleScreen handle, IMesaDrawing methods);
-
-    void FrameUpdate(FrameEventArgs args);
+    public GtkWidget? Focused { get; set; }
 }

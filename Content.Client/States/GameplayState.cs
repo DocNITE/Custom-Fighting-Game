@@ -9,12 +9,12 @@ public sealed class GameplayState : State
     [Dependency] private readonly IEntityManager _entManager = default!;
     [Dependency] protected readonly IUserInterfaceManager UserInterfaceManager = default!;
 
-    private readonly GameplayStateLoadController _loadController;
+    private readonly StateLoadController _loadController;
     public GameplayState()
     {
         IoCManager.InjectDependencies(this);
         
-        _loadController = UserInterfaceManager.GetUIController<GameplayStateLoadController>();
+        _loadController = UserInterfaceManager.GetUIController<StateLoadController>();
     }
 
     protected override void Startup()

@@ -1,41 +1,107 @@
-/*
- * using System.Numerics;
+using System.Numerics;
 using Content.Client.Graphics;
-using Content.Client.Graphics.Viewport;
-using Robust.Client.Graphics;
 
 namespace Content.Client.UserInterfaces.Controls;
 
 [Virtual]
 public partial class GtkWindow : GtkWidget
 {
-    public string Content = "";
+    private float _textureSize = 32;
 
-    public GtkWindow()
-    {
-        // hm
-    }
+    public string TexturePath { get; set; } = "/Textures/Interface/win-gui.png";
     
-    public override void Draw(GtkDrawingHandle handle)
+    public override bool OnDraw(GtkDrawingHandle handle)
     {
-        base.Draw(handle);
-
-        var tex1 = new GraphicsTexture("/Textures/Interface/Window.png");
-        tex1.Rect = new UIBox2(Vector2.Zero, new Vector2(16, 16));
-        tex1.Size = new Vector2(16, 16);
-        tex1.Position = new Vector2(0, 0);
-        var tex2 = new GraphicsTexture("/Textures/Interface/Window.png");
-        tex2.Rect = new UIBox2(new Vector2(16, 0), new Vector2(32, 16));
-        tex2.Size = new Vector2(16, 16);
-        tex2.Position = new Vector2(16*2, 0);
-        var tex3 = new GraphicsTexture("/Textures/Interface/Window.png");
-        tex3.Rect = new UIBox2(new Vector2(16, 0), new Vector2(32, 16));
-        tex3.Size = new Vector2(16, 16);
-        tex3.Position = new Vector2(32*2, 0);
+        if (!Visible)
+            return false;
         
-        handle.DrawGlobalTexture(tex1, new Color(255, 255, 255, 20));
-        handle.DrawGlobalTexture(tex2, new Color(255, 255, 255, 90));
-        handle.DrawGlobalTexture(tex3, new Color(255, 255, 255, 180));
+        // Draw sliced window image
+        DrawSliceImage(handle);
+        
+        return base.OnDraw(handle);
     }
+
+    #region Drawing methods
+    protected virtual void DrawSliceImage(GtkDrawingHandle handle)
+    {
+        for (var i = 1; i <= 9; i++)
+        {
+            var localSize = new Vector2(_textureSize/3, _textureSize/3);
+            var tex = new GraphicsTexture(TexturePath);
+            
+            localSize = new Vector2(_textureSize/3, _textureSize/3);
+            if (Size.X <= _textureSize)
+                localSize = new Vector2(Size.X/3, localSize.Y);
+            if (Size.Y <= _textureSize)
+                localSize = new Vector2(localSize.X, Size.Y/3);
+            
+            switch (i)
+            {
+                case 1:
+                    tex.Rect = new UIBox2(Vector2.Zero, localSize);
+                    tex.Size = localSize;
+                    tex.Position = Vector2.Zero;
+                    
+                    DrawTexture(handle, tex);
+                    break;
+                case 2:
+                    tex.Rect = new UIBox2(new Vector2(localSize.X, 0), new Vector2(localSize.X*2, localSize.Y));
+                    tex.Size = new Vector2(Size.X - ((localSize.X)*2), localSize.Y);
+                    tex.Position = new Vector2(localSize.X, 0);
+                    
+                    DrawTexture(handle, tex);
+                    break;
+                case 3:
+                    tex.Rect = new UIBox2(new Vector2(_textureSize - localSize.X, 0), new Vector2(_textureSize, localSize.Y));
+                    tex.Size = localSize;
+                    tex.Position = new Vector2(Size.X - localSize.X, 0);
+                    
+                    DrawTexture(handle, tex);
+                    break;
+                case 4:
+                    tex.Rect = new UIBox2(new Vector2(0, localSize.Y), new Vector2(localSize.X, localSize.Y*2));
+                    tex.Size = new Vector2(localSize.X, Size.Y - (localSize.Y * 2));
+                    tex.Position = new Vector2(0, localSize.Y-1);
+                    
+                    DrawTexture(handle, tex);
+                    break;
+                case 5:
+                    tex.Rect = new UIBox2(localSize, new Vector2(_textureSize, _textureSize) - localSize);
+                    tex.Size = new Vector2(Size.X - (localSize.X*2), Size.Y - (localSize.Y*2));
+                    tex.Position = localSize - new Vector2(0, 1);
+                    
+                    DrawTexture(handle, tex);
+                    break;
+                case 6:
+                    tex.Rect = new UIBox2(new Vector2(_textureSize - localSize.X, localSize.Y), new Vector2(_textureSize, localSize.Y*2));
+                    tex.Size = new Vector2(localSize.X, Size.Y - (localSize.Y * 2));;
+                    tex.Position = new Vector2(Size.X - localSize.X, localSize.Y-1);
+                    
+                    DrawTexture(handle, tex);
+                    break;
+                case 7:
+                    tex.Rect = new UIBox2(new Vector2(0, localSize.Y*2), new Vector2(localSize.X, _textureSize));
+                    tex.Size = localSize;
+                    tex.Position = new Vector2(0, Size.Y - localSize.Y-1);
+                    
+                    DrawTexture(handle, tex);
+                    break;
+                case 8:
+                    tex.Rect = new UIBox2(new Vector2(localSize.X, localSize.Y*2), new Vector2(localSize.X*2, _textureSize));
+                    tex.Size = new Vector2(Size.X - ((localSize.X)*2), localSize.Y);
+                    tex.Position = new Vector2(localSize.X, Size.Y - localSize.Y-1);
+                    
+                    DrawTexture(handle, tex);
+                    break;
+                case 9:
+                    tex.Rect = new UIBox2(new Vector2(_textureSize - localSize.X, localSize.Y*2), new Vector2(_textureSize, _textureSize));
+                    tex.Size = localSize;
+                    tex.Position = new Vector2(Size.X - localSize.X, Size.Y - localSize.Y-1);
+                    
+                    DrawTexture(handle, tex);
+                    break;
+            }
+        }
+    }
+    #endregion
 }
- */

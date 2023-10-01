@@ -113,6 +113,9 @@ public sealed class ScalingViewport : Control, IViewportControl, IMesaDrawing
         DrawTexture(handle, texture, drawBox);
         */
         
+        //TODO: Make 3d graphics (with sprites) for exploring mode
+        //handle.DrawPrimitives();
+        
         // Draw UI content
         _gtkUserInterfaceManager.Draw(handle, this);
 
@@ -174,7 +177,7 @@ public sealed class ScalingViewport : Control, IViewportControl, IMesaDrawing
         var textureLocalPosition = new Vector2((float)drawBox.TopLeft.X, (float)drawBox.TopLeft.Y) + 
                                    texturePosition * new Vector2(
                                        (float)drawBox.Size.X / (float)_physicalSize.X, 
-                                       (float)drawBox.Size.X / (float)_physicalSize.X);
+                                       (float)drawBox.Size.Y / (float)_physicalSize.Y);
 
         // draw texture
         handle.DrawTextureRectRegion(texture.Texture,
@@ -194,12 +197,12 @@ public sealed class ScalingViewport : Control, IViewportControl, IMesaDrawing
         var position = rect.TopLeft;
         
         var localSize = new Vector2(
-            drawBox.Width/( _physicalSize.X / ((size.X*_curRenderScale)*size.X) ), 
-            drawBox.Height/( _physicalSize.Y / ((size.Y*_curRenderScale)*size.Y) ));
+            drawBox.Width/( _physicalSize.X / ((size.X*_curRenderScale)) ), 
+            drawBox.Height/( _physicalSize.Y / ((size.Y*_curRenderScale)) ));
         var localPosition = new Vector2((float)drawBox.TopLeft.X, (float)drawBox.TopLeft.Y) + 
                             position * new Vector2(
                                        (float)drawBox.Size.X / (float)_physicalSize.X, 
-                                       (float)drawBox.Size.X / (float)_physicalSize.X);
+                                       (float)drawBox.Size.Y / (float)_physicalSize.Y);
         
         handle.DrawRect(
             new UIBox2(
@@ -250,6 +253,11 @@ public sealed class ScalingViewport : Control, IViewportControl, IMesaDrawing
     public MapCoordinates ScreenToMap(Vector2 coords)
     {
         return new MapCoordinates();
+    }
+
+    public MapCoordinates PixelToMap(Vector2 point)
+    {
+        throw new NotImplementedException();
     }
 
     public Vector2 WorldToScreen(Vector2 map)

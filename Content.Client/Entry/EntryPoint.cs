@@ -1,3 +1,5 @@
+using Content.Client.GameMan;
+using Content.Client.Input;
 using Content.Client.IoC;
 using Content.Client.Novel.Manager;
 using Content.Client.States;
@@ -5,6 +7,7 @@ using Content.Client.UserInterfaces;
 using JetBrains.Annotations;
 using Robust.Client;
 using Robust.Client.Graphics;
+using Robust.Client.Input;
 using Robust.Client.State;
 using Robust.Client.UserInterface;
 using Robust.Shared.ContentPack;
@@ -18,13 +21,16 @@ namespace Content.Client.Entry;
 public sealed class EntryPoint : GameClient
 {
     [Dependency] private readonly IUserInterfaceManager _userInterfaceManager = default!;
+    [Dependency] private readonly IInputManager _inputManager = default!;
+
     [Dependency] private readonly IGtkUserInterfaceManager _gtkUserInterfaceManager = default!;
     [Dependency] private readonly IVnSceneManager _vnSceneManager = default!;
+    [Dependency] private readonly IGameMan _gameMan = default!;
 
     public override void Init()
     {
         ClientContentIoC.Register();
-        
+
         var factory = IoCManager.Resolve<IComponentFactory>();
         var prototypes = IoCManager.Resolve<IPrototypeManager>();
 
@@ -42,7 +48,10 @@ public sealed class EntryPoint : GameClient
 
         IoCManager.BuildGraph();
         IoCManager.InjectDependencies(this);
-        
+
+        // Initialize bindigs
+        ContentContexts.SetupContexts(_inputManager.Contexts);
+
         // Initialize IoC
         _gtkUserInterfaceManager.Initialize();
         _vnSceneManager.Initialize();
@@ -53,15 +62,17 @@ public sealed class EntryPoint : GameClient
     public override void PostInit()
     {
         base.PostInit();
-            
+
         // Disabled engine light system
         IoCManager.Resolve<ILightManager>().Enabled = false;
+        // Disabled engine viewport
+        _userInterfaceManager.MainViewport.Visible = false;
 
         var stateManager = IoCManager.Resolve<IStateManager>();
-        
-        _userInterfaceManager.MainViewport.Visible = false;
-         stateManager.RequestStateChange<GameplayState>();
-         
+        stateManager.RequestStateChange<GameplayState>();
+
+        _gameMan.Initialize();
+
         var client = IoCManager.Resolve<IBaseClient>();
         client.StartSinglePlayer();
     }
@@ -69,12 +80,14 @@ public sealed class EntryPoint : GameClient
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
-        // DEVNOTE: You might want to do a proper shutdown here.
+        // Game systems
+        _gameMan.Dispose(disposing);
     }
 
     public override void Update(ModUpdateLevel level, FrameEventArgs frameEventArgs)
     {
         base.Update(level, frameEventArgs);
-        // DEVNOTE: Game update loop goes here. Usually you'll want some independent GameTicker.
+        // Game systems
+        _gameMan.Update(level, frameEventArgs);
     }
 }

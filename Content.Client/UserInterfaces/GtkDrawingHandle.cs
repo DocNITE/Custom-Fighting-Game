@@ -2,7 +2,6 @@ using System.Numerics;
 using Content.Client.Graphics;
 using Content.Client.Graphics.Viewport;
 using Robust.Client.Graphics;
-using TerraFX.Interop.DirectX;
 
 namespace Content.Client.UserInterfaces;
 

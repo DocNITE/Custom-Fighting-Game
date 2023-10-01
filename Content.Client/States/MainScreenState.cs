@@ -12,19 +12,20 @@ public sealed class MainScreenState : State
 {
     [Dependency] private readonly IEntityManager _entManager = default!;
     [Dependency] protected readonly IUserInterfaceManager UserInterfaceManager = default!;
-
+    
     public MainScreenState()
     {
         IoCManager.InjectDependencies(this);
+        
     }
 
     protected override void Startup()
     {
-        var screen = new MainScreen();
-        UserInterfaceManager.PopupRoot.AddChild(screen);
+        UserInterfaceManager.LoadScreen<MainScreen>();
     }
 
     protected override void Shutdown()
     {
+        UserInterfaceManager.UnloadScreen();
     }
 }
