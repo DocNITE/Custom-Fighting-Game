@@ -22,7 +22,7 @@ public sealed class EntryPoint : GameClient
 {
     [Dependency] private readonly IUserInterfaceManager _userInterfaceManager = default!;
     [Dependency] private readonly IInputManager _inputManager = default!;
-    
+
     [Dependency] private readonly IGtkUserInterfaceManager _gtkUserInterfaceManager = default!;
     [Dependency] private readonly IVnSceneManager _vnSceneManager = default!;
     [Dependency] private readonly IGameMan _gameMan = default!;
@@ -30,7 +30,7 @@ public sealed class EntryPoint : GameClient
     public override void Init()
     {
         ClientContentIoC.Register();
-        
+
         var factory = IoCManager.Resolve<IComponentFactory>();
         var prototypes = IoCManager.Resolve<IPrototypeManager>();
 
@@ -48,14 +48,13 @@ public sealed class EntryPoint : GameClient
 
         IoCManager.BuildGraph();
         IoCManager.InjectDependencies(this);
-        
+
         // Initialize bindigs
         ContentContexts.SetupContexts(_inputManager.Contexts);
-        
+
         // Initialize IoC
         _gtkUserInterfaceManager.Initialize();
         _vnSceneManager.Initialize();
-        _gameMan.Initialize();
 
         factory.GenerateNetIds();
     }
@@ -63,15 +62,17 @@ public sealed class EntryPoint : GameClient
     public override void PostInit()
     {
         base.PostInit();
-            
+
         // Disabled engine light system
         IoCManager.Resolve<ILightManager>().Enabled = false;
         // Disabled engine viewport
         _userInterfaceManager.MainViewport.Visible = false;
 
         var stateManager = IoCManager.Resolve<IStateManager>();
-         stateManager.RequestStateChange<GameplayState>();
-         
+        stateManager.RequestStateChange<GameplayState>();
+
+        _gameMan.Initialize();
+
         var client = IoCManager.Resolve<IBaseClient>();
         client.StartSinglePlayer();
     }

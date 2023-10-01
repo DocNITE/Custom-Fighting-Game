@@ -6,4 +6,5 @@ namespace Content.Shared.Input;
 public static class ContentKeyFunctions
 {
     public static readonly BoundKeyFunction OpenUi = "OpenUi";
+    public static readonly BoundKeyFunction SkipMessage = "SkipMessage";
 }

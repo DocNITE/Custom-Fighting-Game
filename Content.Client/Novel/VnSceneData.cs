@@ -1,11 +1,8 @@
-using Robust.Shared.Prototypes;
-
 namespace Content.Client.Novel;
 
-[Prototype("vnScene")]
-public sealed partial class VnSceneData : IPrototype
+[DataDefinition]
+public sealed partial class VnSceneData
 {
-    [IdDataField] public string ID { get; } = default!;
-    [DataField("characters")] public List<string> Characters { get; } = new();
-    [DataField("content")] public List<VnContentData> Content { get; } = new();
+    [DataField] public string Id = "";
+    [DataField] public List<VnContentData> Content = new();
 }

@@ -2,21 +2,24 @@ using System.Numerics;
 using Content.Client.UserInterfaces;
 using Content.Client.UserInterfaces.Controls;
 using Content.Client.Novel;
-using Content.Client.Graphics;
 using Robust.Shared.Timing;
+using Robust.Shared.Input;
+using Content.Shared.Input;
+using Content.Client.Novel.Manager;
 
 namespace Content.Client.GameMan.States;
 
-public sealed class NovelState : GameState
+public sealed class NovelState : GameState, INovelState
 {
-    GtkNovelScreen Ui = new();
+    public GtkNovelScreen Ui { get; } = new();
 
     public override void Initialize()
     {
         Viewport = new GtkNovelScreen();
         Viewport.AddChild(Ui);
 
-        Ui.DoBackground("/Textures/Arts/vergen-tavern-file.png");
+        /*
+         *         Ui.DoBackground("/Textures/Arts/vergen-tavern-file.png");
         var data = new VnContentData();
         data.Text = " Some text for animation test YEHOOO lol  AHHHHH lol xd ahahah xddd ahah its cool i think lol... Shit okay \n";
         Ui.DoBackgroundDialog(data);
@@ -24,17 +27,33 @@ public sealed class NovelState : GameState
         data.Text = "new content yes... And it was coool lol! So, do you \n have some plans on tomorow? Maybe we try erp? FFFF 0123456789";
         data.Delay = 100;
         Ui.DoBackgroundDialog(data, false);
+        */
+
         base.Initialize();
+
+        IoCManager.Resolve<IVnSceneManager>().LoadScene("default");
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
     }
 }
 
 public class GtkNovelScreen : GtkWidget
 {
+    [Dependency] private readonly IVnSceneManager _vnSceneMan = default!;
+
+    private VnContentData? _currentDialog { get; set; }
+
     public GtkTexture? Background;
     public GtkNovelDialogLabel? DialogLabel;
 
+    public bool? IsMessage => DialogLabel?.IsMessage;
+
     public GtkNovelScreen()
     {
+        Focus();
     }
 
     public void CreateDialog()
@@ -84,6 +103,7 @@ public class GtkNovelScreen : GtkWidget
         DialogLabel.Size = size;
         DialogLabel.Position = pos;
         DialogLabel.Visible = true;
+        DialogLabel.MessageEnded += OnMessageEnded;
         DialogLabel.AddText(dialog);
     }
 
@@ -100,8 +120,55 @@ public class GtkNovelScreen : GtkWidget
         DialogLabel.Size = new Vector2(800, 600);
         DialogLabel.Position = Vector2.Zero;
         DialogLabel.Visible = true;
+        DialogLabel.MessageEnded += OnMessageEnded;
         DialogLabel.AddText(dialog);
+    }
 
+    public void ClearDialog()
+    {
+        DialogLabel?.Dispose();
+        DialogLabel = null;
+    }
+
+    public void SkipMessage()
+    {
+        Logger.Debug("PrSKIIIPdsse");
+
+        if (DialogLabel == null)
+            return;
+
+        if (DialogLabel.IsMessage)
+            DialogLabel.SpeedUpText();
+        else
+            Act();
+    }
+
+    public void Act()
+    {
+        if (_currentDialog == null) return;
+
+        foreach (var action in _currentDialog.Actions)
+        {
+            action.Act();
+        }
+
+        _currentDialog = null;
+    }
+
+    public void OnMessageEnded(VnContentData dialog)
+    {
+        _currentDialog = dialog;
+
+        if (dialog.Skip)
+            SkipMessage();
+    }
+
+    public override void OnKeyBindDown(BoundKeyEventArgs args)
+    {
+        if (args.Function == EngineKeyFunctions.UIClick)
+            SkipMessage();
+
+        base.OnKeyBindDown(args);
     }
 
     public override bool OnDraw(GtkDrawingHandle handle)
@@ -130,6 +197,8 @@ public class GtkNovelLabel : GtkLabel
     {
         get => _isEnded;
     }
+
+    public event Action<VnContentData>? MessageEnded;
 
     public void AddText(VnContentData dialogue)
     {
@@ -165,7 +234,7 @@ public class GtkNovelLabel : GtkLabel
                     if (_currentSymbol == -1)
                     {
                         _currentSymbol = 0;
-                        this.Content += " ";
+                        this.Content += _endSeperator[_currentSymbol];
                     }
 
                     if (_currentSymbol > _endSeperator.Length - 1)
@@ -208,7 +277,10 @@ public class GtkNovelLabel : GtkLabel
 
     private void OnMessageEnded(VnContentData dialog)
     {
-        _isEnded = true;
+        if (!IsMessage)
+            _isEnded = true;
+
+        MessageEnded?.Invoke(dialog);
     }
 }
 
@@ -218,17 +290,29 @@ public class GtkNovelDialogLabel : GtkWindow
 
     public bool IsEnded => Label.IsEnded;
     public bool IsMessage => Label.IsMessage;
+    public event Action<VnContentData>? MessageEnded;
 
     public float Padding = 5.0f;
 
     public GtkNovelDialogLabel()
     {
         AddChild(Label);
+        Label.MessageEnded += OnMessageEnded;
     }
 
     public void AddText(VnContentData dia)
     {
         Label.AddText(dia);
+    }
+
+    public void SpeedUpText()
+    {
+        Label.SpeedUpText();
+    }
+
+    public void OnMessageEnded(VnContentData dialog)
+    {
+        MessageEnded?.Invoke(dialog);
     }
 
     public override void InvalidateWidget()

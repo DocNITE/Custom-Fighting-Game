@@ -42,10 +42,5 @@ public class GameMan : IGameMan
 
         // TODO: Send StateChangeEvent for systems
     }
-
-    public GtkWidget GetStateGui()
-    {
-        return TargetState != null ? TargetState.Viewport : new GtkWidget();
-    }
 }
 

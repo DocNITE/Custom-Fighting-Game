@@ -1,5 +1,13 @@
 ﻿version: 1 # Currently unused.
 binds: # These are all the current engine keybinds.
+  # game functions
+  - function: SkipMessage
+    type: State
+    key: Return
+  - function: SkipMessage
+    type: State
+    key: S
+  # engine functions
   - function: UIClick
     type: State
     key: MouseLeft
